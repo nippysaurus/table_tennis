@@ -3,11 +3,11 @@
 
 static void init() {
   //APP_LOG(APP_LOG_LEVEL_DEBUG, "bla");
-  setup_scoring_window();
+  gameplay_window_create();
 }
 
 static void deinit() {
-  teardown_scoring_window();
+  gameplay_window_destroy();
 }
 
 int main() {
