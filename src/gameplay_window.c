@@ -25,15 +25,11 @@ static void game_summary_layer_display_updated_state();
 static game_over_callback game_over;
 
 static void increment_top_player() {
-  //game_summary_layer_increment_top_player(s_game_summary);
-  
   table_tennis_increment_score(game_state, TEAM_1);
   game_summary_layer_display_updated_state();
 }
 
 static void increment_bottom_player() {
-  //game_summary_layer_increment_bottom_player(s_game_summary);
-  
   table_tennis_increment_score(game_state, TEAM_2);
   game_summary_layer_display_updated_state();
 }
@@ -44,22 +40,13 @@ static void click_config_provider(void *context) {
 }
 
 
-static void log_game_state() {
-  char str[80];
-  snprintf(str, 80, "team 1 - serving: %d", game_state->teams[TEAM_1].serving);
-  APP_LOG(APP_LOG_LEVEL_DEBUG, str);
-  snprintf(str, 80, "team 2 - serving: %d", game_state->teams[TEAM_2].serving);
-  APP_LOG(APP_LOG_LEVEL_DEBUG, str);
-}
 
 static void game_summary_layer_display_updated_state() {
-  log_game_state();
-  
   // handle game over logic
   if (game_state->winner != NULL) {
     game_over();
-    free(game_state);
-    game_state = table_tennis_create(SHORT_GAME, TEAM_1);
+    //free(game_state);
+    //game_state = table_tennis_create(SHORT_GAME, TEAM_1);
     return;
   }
   
@@ -213,9 +200,8 @@ void gameplay_window_destroy() {
   text_layer_destroy(text_layer_b);
   text_layer_destroy(text_layer_b_bg);
   layer_destroy(game_summary_layer);
-  table_tennis_destroy(game_state);
   
-  free(game_state);
+  table_tennis_destroy(game_state);
   
   window_destroy(s_main_window);
 }
