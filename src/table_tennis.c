@@ -1,15 +1,17 @@
 #include <pebble.h>
 #include "table_tennis.h"
 
+#define DEBUG
+
 void table_tennis_update_team_serving_state(TableTennis* table_tennis, TeamNumber starting_team);
 void table_tennis_update_winner(TableTennis* table_tennis);
 
-TableTennis* table_tennis_create(enum GameLength game_length, TeamNumber starting_team /*, GameStateChangeCallbacks table_tennis_change_callbacks */) {
+TableTennis* table_tennis_create(enum GameLength game_length, TeamNumber starting_team) {
   TableTennis* table_tennis = malloc(sizeof(TableTennis));
 
   table_tennis->total_score = 0;
   table_tennis->winner = NULL;
-  //table_tennis->overtime = false;
+  table_tennis->overtime = false;
 
   table_tennis->teams[TEAM_1].score = 0;
   table_tennis->teams[TEAM_1].serving = false;
@@ -32,7 +34,6 @@ void table_tennis_destroy(TableTennis* table_tennis) {
 }
 
 void table_tennis_increment_score(TableTennis* table_tennis, TeamNumber team_number) {
-
   // update general game state
   table_tennis->total_score += 1;
 

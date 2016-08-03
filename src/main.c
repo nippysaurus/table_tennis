@@ -1,9 +1,12 @@
 #include <pebble.h>
 #include "gameplay_window.h"
 
+static void game_over() {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "game over");
+}
+
 static void init() {
-  //APP_LOG(APP_LOG_LEVEL_DEBUG, "bla");
-  gameplay_window_create();
+  gameplay_window_create(game_over);
 }
 
 static void deinit() {

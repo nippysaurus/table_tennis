@@ -1,6 +1,5 @@
 #include <pebble.h>
 #include "gameplay_window.h"
-#include "table_tennis.h"
 
 #define SCORE_TEXT_LAYER_HEIGHT 55
 
@@ -10,7 +9,6 @@ static Window *s_main_window;
 static ActionBarLayer *s_main_window_action_bar;
 static GBitmap *s_bitmap_button_increment_score;
 static GBitmap *s_bitmap_button_more;
-
 
 // game summary layers
 Layer *game_summary_layer;
@@ -24,7 +22,7 @@ TableTennis* game_state;
 
 static void game_summary_layer_display_updated_state();
 
-
+static game_over_callback game_over;
 
 static void increment_top_player() {
   //game_summary_layer_increment_top_player(s_game_summary);
@@ -46,10 +44,24 @@ static void click_config_provider(void *context) {
 }
 
 
-
+static void log_game_state() {
+  char str[80];
+  snprintf(str, 80, "team 1 - serving: %d", game_state->teams[TEAM_1].serving);
+  APP_LOG(APP_LOG_LEVEL_DEBUG, str);
+  snprintf(str, 80, "team 2 - serving: %d", game_state->teams[TEAM_2].serving);
+  APP_LOG(APP_LOG_LEVEL_DEBUG, str);
+}
 
 static void game_summary_layer_display_updated_state() {
-  //APP_LOG(APP_LOG_LEVEL_DEBUG, "xxxx");
+  log_game_state();
+  
+  // handle game over logic
+  if (game_state->winner != NULL) {
+    game_over();
+    free(game_state);
+    game_state = table_tennis_create(SHORT_GAME, TEAM_1);
+    return;
+  }
   
   GColor8 top_player_bg;
   GColor8 top_player_fg;
@@ -93,7 +105,9 @@ static void game_summary_layer_display_updated_state() {
 }
 
 
-void gameplay_window_create() {
+void gameplay_window_create(game_over_callback game_over_callback) {
+  game_over = game_over_callback;
+
   s_main_window = window_create();
 
   // create action bar
@@ -143,6 +157,7 @@ void gameplay_window_create() {
   //);
   
   game_state = table_tennis_create(SHORT_GAME, TEAM_1);
+  
   game_summary_layer = layer_create(GRect(0, 0, frame.size.w, frame.size.h));
   
   // top background
@@ -199,6 +214,8 @@ void gameplay_window_destroy() {
   text_layer_destroy(text_layer_b_bg);
   layer_destroy(game_summary_layer);
   table_tennis_destroy(game_state);
+  
+  free(game_state);
   
   window_destroy(s_main_window);
 }
