@@ -25,7 +25,8 @@ enum GameLength {
 
 typedef enum {
   TEAM_1 = 0,
-  TEAM_2 = 1
+  TEAM_2 = 1,
+  NO_TEAM = 99
 } TeamNumber;
 
 // typedef void (*team_serving_changed_callback)(TeamNumber team_number);
@@ -47,7 +48,7 @@ typedef struct {
 
 typedef struct {
   Team teams[2];
-  Team* winner;
+  TeamNumber winner;
   int total_score;
   bool overtime;
 } TableTennis;

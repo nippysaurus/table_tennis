@@ -43,10 +43,8 @@ static void click_config_provider(void *context) {
 
 static void game_summary_layer_display_updated_state() {
   // handle game over logic
-  if (game_state->winner != NULL) {
-    game_over();
-    //free(game_state);
-    //game_state = table_tennis_create(SHORT_GAME, TEAM_1);
+  if (game_state->winner != NO_TEAM) {
+    game_over(game_state->winner);
     return;
   }
   

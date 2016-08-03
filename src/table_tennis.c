@@ -10,7 +10,7 @@ TableTennis* table_tennis_create(enum GameLength game_length, TeamNumber startin
   TableTennis* table_tennis = malloc(sizeof(TableTennis));
 
   table_tennis->total_score = 0;
-  table_tennis->winner = NULL;
+  table_tennis->winner = NO_TEAM;
   table_tennis->overtime = false;
 
   table_tennis->teams[TEAM_1].score = 0;
@@ -86,10 +86,10 @@ void table_tennis_update_winner(TableTennis* table_tennis) {
   Team* team2 = &table_tennis->teams[TEAM_2];
 
   if (team1->score >= 11 && (team1->score - team2->score) >= 2) {
-    table_tennis->winner = team1;
+    table_tennis->winner = TEAM_1;
   }
 
   if (team2->score >= 11 && (team2->score - team1->score) >= 2) {
-    table_tennis->winner = team2;
+    table_tennis->winner = TEAM_2;
   }
 }

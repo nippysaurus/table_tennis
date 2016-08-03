@@ -5,13 +5,13 @@
 bool gameplay_window_visible = false;
 bool game_over_window_visible = false;
 
-static void game_over() {
+static void game_over(TeamNumber winning_team) {
   //APP_LOG(APP_LOG_LEVEL_DEBUG, "game over");
   if (gameplay_window_visible == true) {
     gameplay_window_destroy();
     gameplay_window_visible = false;
   }
-  game_over_window_create(true);
+  game_over_window_create(winning_team == TEAM_2);
 }
 
 static void init() {
