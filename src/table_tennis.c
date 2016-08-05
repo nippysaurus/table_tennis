@@ -6,7 +6,7 @@
 void table_tennis_update_team_serving_state(TableTennis* table_tennis, TeamNumber starting_team);
 void table_tennis_update_winner(TableTennis* table_tennis);
 
-TableTennis* table_tennis_create(enum GameLength game_length, TeamNumber starting_team) {
+TableTennis* table_tennis_create(GameLength game_length, TeamNumber starting_team) {
   TableTennis* table_tennis = malloc(sizeof(TableTennis));
 
   table_tennis->total_score = 0;

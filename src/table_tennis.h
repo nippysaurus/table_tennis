@@ -18,10 +18,10 @@
 // - doubles
 //
 
-enum GameLength {
+typedef enum {
   SHORT_GAME = 11,
   LONG_GAME = 21
-};
+} GameLength;
 
 typedef enum {
   TEAM_1 = 0,
@@ -53,6 +53,6 @@ typedef struct {
   bool overtime;
 } TableTennis;
 
-TableTennis* table_tennis_create(enum GameLength game_length, TeamNumber starting_team /*, GameStateChangeCallbacks table_tennis_change_callbacks */);
+TableTennis* table_tennis_create(GameLength game_length, TeamNumber starting_team /*, GameStateChangeCallbacks table_tennis_change_callbacks */);
 void table_tennis_destroy(TableTennis* table_tennis);
 void table_tennis_increment_score(TableTennis* table_tennis, TeamNumber team);
