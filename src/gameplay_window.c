@@ -47,7 +47,7 @@ static void game_summary_layer_display_updated_state() {
     game_over(game_state->winner);
     return;
   }
-  
+
   GColor8 top_player_bg;
   GColor8 top_player_fg;
   GColor8 bottom_player_bg;
@@ -97,30 +97,30 @@ void gameplay_window_create(game_over_callback game_over_callback) {
 
   // create action bar
   s_main_window_action_bar = action_bar_layer_create();
-  
+
   // load action bar icons assets
   s_bitmap_button_increment_score = gbitmap_create_with_resource(RESOURCE_ID_BUTTON_INCREMENT_SCORE);
   s_bitmap_button_more = gbitmap_create_with_resource(RESOURCE_ID_BUTTON_MORE);
-  
+
   // set action bar icons
   action_bar_layer_set_icon(s_main_window_action_bar, BUTTON_ID_UP, s_bitmap_button_increment_score);
   action_bar_layer_set_icon(s_main_window_action_bar, BUTTON_ID_SELECT, s_bitmap_button_more);
   action_bar_layer_set_icon(s_main_window_action_bar, BUTTON_ID_DOWN, s_bitmap_button_increment_score);
-  
+
   // set action bar click provider
   action_bar_layer_set_click_config_provider(s_main_window_action_bar, click_config_provider);
-  
+
   // add action bar to window
   action_bar_layer_add_to_window(s_main_window_action_bar, s_main_window);
-  
-  
 
-  
+
+
+
 
   // Get the bounds of the Window
   Layer* window_layer = window_get_root_layer(s_main_window);
   GRect window_bounds = layer_get_bounds(window_layer);
-  
+
   GRect frame = GRect(
     0,
     0,
@@ -140,26 +140,26 @@ void gameplay_window_create(game_over_callback game_over_callback) {
   //  window_get_root_layer(s_main_window),
   //  text_layer_get_layer(text_layer_t_bg)
   //);
-  
+
   game_state = table_tennis_create(SHORT_GAME, TEAM_1);
-  
+
   game_summary_layer = layer_create(GRect(0, 0, frame.size.w, frame.size.h));
-  
+
   // top background
   text_layer_t_bg = text_layer_create(GRect(0, 0, frame.size.w, frame.size.h / 2));
   layer_add_child(game_summary_layer, text_layer_get_layer(text_layer_t_bg));
-  
+
   // top text
   text_layer_t = text_layer_create(GRect(10, 10, frame.size.w - 20, SCORE_TEXT_LAYER_HEIGHT));
   text_layer_set_overflow_mode(text_layer_t, GTextOverflowModeWordWrap);
   text_layer_set_text_alignment(text_layer_t, GTextAlignmentCenter);
   text_layer_set_font(text_layer_t, fonts_get_system_font(FONT_KEY_BITHAM_42_BOLD));
   layer_add_child(game_summary_layer, text_layer_get_layer(text_layer_t));
-  
+
   // bottom background
   text_layer_b_bg = text_layer_create(GRect(0, frame.size.h / 2, frame.size.w, frame.size.h / 2));
   layer_add_child(game_summary_layer, text_layer_get_layer(text_layer_b_bg));
-  
+
   // bottom text
   text_layer_b = text_layer_create(GRect(10, (frame.size.h - SCORE_TEXT_LAYER_HEIGHT) - 10, frame.size.w - 20, SCORE_TEXT_LAYER_HEIGHT));
   text_layer_set_overflow_mode(text_layer_b, GTextOverflowModeWordWrap);
@@ -168,38 +168,38 @@ void gameplay_window_create(game_over_callback game_over_callback) {
   layer_add_child(game_summary_layer, text_layer_get_layer(text_layer_b));
 
   game_summary_layer_display_updated_state();
-  
+
   // add game summary layer to window
   layer_add_child(
     window_get_root_layer(s_main_window),
     game_summary_layer
   );
-  
-  
-  
 
-  window_stack_push(s_main_window, false);  
+
+
+
+  window_stack_push(s_main_window, false);
 }
 
 void gameplay_window_destroy() {
   window_stack_remove(s_main_window, false);
-  
+
   // destroy action bar icons
   gbitmap_destroy(s_bitmap_button_increment_score);
   gbitmap_destroy(s_bitmap_button_more);
-  
+
   // destroy action bar later
   action_bar_layer_destroy(s_main_window_action_bar);
-  
-  
-  
+
+
+
   text_layer_destroy(text_layer_t);
   text_layer_destroy(text_layer_t_bg);
   text_layer_destroy(text_layer_b);
   text_layer_destroy(text_layer_b_bg);
   layer_destroy(game_summary_layer);
-  
+
   table_tennis_destroy(game_state);
-  
+
   window_destroy(s_main_window);
 }

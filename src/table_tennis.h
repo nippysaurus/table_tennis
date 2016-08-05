@@ -32,7 +32,7 @@ typedef enum {
 // typedef void (*team_serving_changed_callback)(TeamNumber team_number);
 // typedef void (*team_score_changed_callback)(TeamNumber team_number, int new_score, char new_score_formatted[4]);
 // typedef void (*team_win_callback)(TeamNumber team_number);
-// 
+//
 // typedef struct {
 //   team_serving_changed_callback serving_team_changed;
 //   team_score_changed_callback team_score_changed;

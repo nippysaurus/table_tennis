@@ -7,11 +7,11 @@ static TextLayer *s_message_text_layer;
 void game_over_window_create(bool won) {
   s_game_over_window = window_create();
   window_stack_push(s_game_over_window, false);
-  
+
   // Get the bounds of the Window
   Layer* window_layer = window_get_root_layer(s_game_over_window);
   GRect window_bounds = layer_get_bounds(window_layer);
-  
+
   s_message_text_layer = text_layer_create(GRect(
     10,
     10,
