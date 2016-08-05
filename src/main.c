@@ -24,6 +24,10 @@ static void deinit() {
     gameplay_window_destroy();
     gameplay_window_visible = false;
   }
+  if (game_over_window_visible == true) {
+    game_over_window_destroy();
+    game_over_window_visible = false;
+  }
 }
 
 int main() {
