@@ -90,7 +90,7 @@ static void game_summary_layer_display_updated_state() {
 }
 
 
-void gameplay_window_create(game_over_callback game_over_callback) {
+void gameplay_window_create(GameLength game_length, TeamNumber first_serve, game_over_callback game_over_callback) {
   game_over = game_over_callback;
 
   s_main_window = window_create();
@@ -141,7 +141,10 @@ void gameplay_window_create(game_over_callback game_over_callback) {
   //  text_layer_get_layer(text_layer_t_bg)
   //);
 
-  game_state = table_tennis_create(SHORT_GAME, TEAM_1);
+  game_state = table_tennis_create(
+    game_length,
+    first_serve
+  );
 
   game_summary_layer = layer_create(GRect(0, 0, frame.size.w, frame.size.h));
 

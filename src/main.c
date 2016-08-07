@@ -1,7 +1,9 @@
 #include <pebble.h>
+#include "game_setup_window.h"
 #include "gameplay_window.h"
 #include "game_over_window.h"
 
+bool game_setup_window_visible = false;
 bool gameplay_window_visible = false;
 bool game_over_window_visible = false;
 
@@ -15,12 +17,29 @@ static void game_over(TeamNumber winning_team) {
   game_over_window_visible = false;
 }
 
-static void init() {
-  gameplay_window_create(game_over);
+static void game_setup_ready_callback(GameSetup game_setup) {
+  if (game_setup_window_visible == true) {
+    game_setup_window_destroy();
+    game_setup_window_visible = false;
+  }
+  gameplay_window_create(
+    game_setup.game_length,
+    game_setup.first_serve,
+    game_over
+  );
   gameplay_window_visible = true;
 }
 
+static void init() {
+  game_setup_window_create(game_setup_ready_callback);
+  game_setup_window_visible = true;
+}
+
 static void deinit() {
+  if (game_setup_window_visible == true) {
+    game_setup_window_destroy();
+    game_setup_window_visible = false;
+  }
   if (gameplay_window_visible == true) {
     gameplay_window_destroy();
     gameplay_window_visible = false;
