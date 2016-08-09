@@ -8,7 +8,7 @@ static GameSetup s_game_setup;
 static GameSetupReadyCallback s_game_setup_ready_callback;
 
 #define NUM_MENU_SECTIONS 1
-#define NUM_FIRST_MENU_ITEMS 4
+#define NUM_FIRST_MENU_ITEMS 6
 
 // game length state
 int currently_selected_game_length_index;
@@ -19,6 +19,16 @@ char* game_length_option_labels[2];
 int currently_selected_first_serve_index;
 TeamNumber first_serve_options[2];
 char* first_serve_option_labels[2];
+
+// serve change vibration
+int currently_selected_serve_change_option_index;
+VibrateOption serve_change_options[3];
+char* serve_change_option_labels[3];
+
+// game over vibration
+int currently_selected_game_over_option_index;
+VibrateOption game_over_options[3];
+char* game_over_option_labels[3];
 
 static uint16_t menu_get_num_sections_callback(MenuLayer *menu_layer, void *data) {
   return NUM_MENU_SECTIONS;
@@ -82,6 +92,24 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
           );
           break;
         case 3:
+          menu_cell_basic_draw(
+            ctx,
+            cell_layer,
+            "Serve Change",
+            serve_change_option_labels[currently_selected_serve_change_option_index],
+            NULL
+          );
+          break;
+        case 4:
+          menu_cell_basic_draw(
+            ctx,
+            cell_layer,
+            "Game Over",
+            game_over_option_labels[currently_selected_game_over_option_index],
+            NULL
+          );
+          break;
+        case 5:
           {
             GSize size = layer_get_frame(cell_layer).size;
             graphics_draw_text(
@@ -122,6 +150,22 @@ static void menu_select_callback(MenuLayer *menu_layer, MenuIndex *cell_index, v
       layer_mark_dirty(menu_layer_get_layer(menu_layer));
       break;
     case 3:
+      currently_selected_serve_change_option_index++;
+      if (currently_selected_serve_change_option_index == sizeof(serve_change_options)) {
+        currently_selected_serve_change_option_index = 0;
+      }
+      s_game_setup.serve_change = serve_change_options[currently_selected_serve_change_option_index];
+      layer_mark_dirty(menu_layer_get_layer(menu_layer));
+      break;
+    case 4:
+      currently_selected_game_over_option_index++;
+      if (currently_selected_game_over_option_index == sizeof(game_over_options)) {
+        currently_selected_game_over_option_index = 0;
+      }
+      s_game_setup.game_over = game_over_options[currently_selected_game_over_option_index];
+      layer_mark_dirty(menu_layer_get_layer(menu_layer));
+      break;
+    case 5:
       s_game_setup_ready_callback(s_game_setup);
       break;
   }
@@ -161,6 +205,24 @@ void game_setup_window_create(GameSetupReadyCallback game_setup_ready_callback) 
   first_serve_options[1] = TEAM_2;
   first_serve_option_labels[0] = "Opponent";
   first_serve_option_labels[1] = "You";
+
+  // serve change vibration
+  currently_selected_serve_change_option_index = 0;
+  serve_change_options[0] = NONE;
+  serve_change_options[1] = SINGLE;
+  serve_change_options[2] = DOUBLE;
+  serve_change_option_labels[0] = "-";
+  serve_change_option_labels[1] = "bzzt";
+  serve_change_option_labels[2] = "bzzt bzzt";
+
+  // game over vibration
+  currently_selected_game_over_option_index = 0;
+  game_over_options[0] = NONE;
+  game_over_options[1] = SINGLE;
+  game_over_options[2] = DOUBLE;
+  game_over_option_labels[0] = "-";
+  game_over_option_labels[1] = "bzzt";
+  game_over_option_labels[2] = "bzzt bzzt";
 
   s_game_setup_window = window_create();
 
