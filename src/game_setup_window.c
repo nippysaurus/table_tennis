@@ -8,7 +8,7 @@ static GameSetup s_game_setup;
 static GameSetupReadyCallback s_game_setup_ready_callback;
 
 #define NUM_MENU_SECTIONS 1
-#define NUM_FIRST_MENU_ITEMS 3
+#define NUM_FIRST_MENU_ITEMS 4
 
 // game length state
 int currently_selected_game_length_index;
@@ -50,6 +50,20 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
     case 0:
       switch (cell_index->row) {
         case 0:
+          {
+            GSize size = layer_get_frame(cell_layer).size;
+            graphics_draw_text(
+              ctx,
+              "START GAME",
+              fonts_get_system_font(FONT_KEY_GOTHIC_28),
+              GRect(0, 0, size.w, size.h),
+              GTextOverflowModeTrailingEllipsis,
+              GTextAlignmentCenter,
+              NULL
+            );
+          }
+          break;
+        case 1:
           menu_cell_basic_draw(
             ctx,
             cell_layer,
@@ -58,7 +72,7 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
             NULL
           );
           break;
-        case 1:
+        case 2:
           menu_cell_basic_draw(
             ctx,
             cell_layer,
@@ -67,8 +81,19 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
             NULL
           );
           break;
-        case 2:
-          menu_cell_title_draw(ctx, cell_layer, "Play!");
+        case 3:
+          {
+            GSize size = layer_get_frame(cell_layer).size;
+            graphics_draw_text(
+              ctx,
+              "START GAME",
+              fonts_get_system_font(FONT_KEY_GOTHIC_28),
+              GRect(0, 0, size.w, size.h),
+              GTextOverflowModeTrailingEllipsis,
+              GTextAlignmentCenter,
+              NULL
+            );
+          }
           break;
       }
       break;
@@ -78,6 +103,9 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
 static void menu_select_callback(MenuLayer *menu_layer, MenuIndex *cell_index, void *data) {
   switch (cell_index->row) {
     case 0:
+      s_game_setup_ready_callback(s_game_setup);
+      break;
+    case 1:
       currently_selected_game_length_index++;
       if (currently_selected_game_length_index == sizeof(game_length_options)) {
         currently_selected_game_length_index = 0;
@@ -85,7 +113,7 @@ static void menu_select_callback(MenuLayer *menu_layer, MenuIndex *cell_index, v
       s_game_setup.game_length = game_length_options[currently_selected_game_length_index];
       layer_mark_dirty(menu_layer_get_layer(menu_layer));
       break;
-    case 1:
+    case 2:
       currently_selected_first_serve_index++;
       if (currently_selected_first_serve_index == sizeof(first_serve_options)) {
         currently_selected_first_serve_index = 0;
@@ -93,7 +121,7 @@ static void menu_select_callback(MenuLayer *menu_layer, MenuIndex *cell_index, v
       s_game_setup.first_serve = first_serve_options[currently_selected_first_serve_index];
       layer_mark_dirty(menu_layer_get_layer(menu_layer));
       break;
-    case 2:
+    case 3:
       s_game_setup_ready_callback(s_game_setup);
       break;
   }
