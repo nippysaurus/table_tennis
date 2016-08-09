@@ -171,24 +171,6 @@ static void menu_select_callback(MenuLayer *menu_layer, MenuIndex *cell_index, v
   }
 }
 
-#ifdef PBL_ROUND 
-static int16_t get_cell_height_callback(MenuLayer *menu_layer, MenuIndex *cell_index, void *callback_context) { 
-  if (menu_layer_is_index_selected(menu_layer, cell_index)) {
-    switch (cell_index->row) {
-      case 0:
-        return MENU_CELL_ROUND_FOCUSED_SHORT_CELL_HEIGHT;
-        break;
-      default:
-        return MENU_CELL_ROUND_FOCUSED_TALL_CELL_HEIGHT;
-    }
-  } else {
-    return MENU_CELL_ROUND_UNFOCUSED_SHORT_CELL_HEIGHT;
-  }
-}
-#endif
-
-
-
 void game_setup_window_create(GameSetupReadyCallback game_setup_ready_callback) {
   s_game_setup_ready_callback = game_setup_ready_callback;
 
@@ -238,8 +220,7 @@ void game_setup_window_create(GameSetupReadyCallback game_setup_ready_callback) 
     .get_header_height = PBL_IF_RECT_ELSE(menu_get_header_height_callback, NULL),
     .draw_header = PBL_IF_RECT_ELSE(menu_draw_header_callback, NULL),
     .draw_row = menu_draw_row_callback,
-    .select_click = menu_select_callback,
-    .get_cell_height = PBL_IF_ROUND_ELSE(get_cell_height_callback, NULL)
+    .select_click = menu_select_callback
   });
 
    menu_layer_set_click_config_onto_window(s_menu_layer, s_game_setup_window);
