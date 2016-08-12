@@ -23,8 +23,7 @@ static void game_setup_ready_callback(GameSetup game_setup) {
     game_setup_window_visible = false;
   }
   gameplay_window_create(
-    game_setup.game_length,
-    game_setup.first_serve,
+    game_setup,
     game_over
   );
   gameplay_window_visible = true;
