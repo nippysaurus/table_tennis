@@ -47,6 +47,12 @@ static void game_summary_layer_display_updated_state() {
   // handle game over logic
   if (game_state->winner != NO_TEAM) {
     game_over(game_state->winner);
+    if (s_game_setup.game_over == SINGLE) {
+      vibes_short_pulse();
+    }
+    if (s_game_setup.game_over == DOUBLE) {
+      vibes_double_pulse();
+    }
     return;
   }
 
@@ -66,6 +72,14 @@ static void game_summary_layer_display_updated_state() {
     bottom_player_bg = GColorWhite;
     bottom_player_fg = GColorBlack;
     #endif
+
+    if (s_game_setup.serve_change == SINGLE) {
+      vibes_short_pulse();
+    }
+    if (s_game_setup.serve_change == DOUBLE) {
+      vibes_double_pulse();
+    }
+
   } else {
     #if defined(PBL_BW)
     top_player_bg = GColorWhite;
