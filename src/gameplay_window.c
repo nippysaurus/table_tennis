@@ -20,6 +20,8 @@ TextLayer *text_layer_b;
 // game state
 TableTennis* game_state;
 
+static GameSetup s_game_setup;
+
 static void game_summary_layer_display_updated_state();
 
 static game_over_callback game_over;
@@ -93,6 +95,8 @@ static void game_summary_layer_display_updated_state() {
 void gameplay_window_create(GameSetup game_setup, game_over_callback game_over_callback) {
   game_over = game_over_callback;
 
+  s_game_setup = game_setup;
+
   s_main_window = window_create();
 
   // create action bar
@@ -142,8 +146,8 @@ void gameplay_window_create(GameSetup game_setup, game_over_callback game_over_c
   //);
 
   game_state = table_tennis_create(
-    game_setup.game_length,
-    game_setup.first_serve
+    s_game_setup.game_length,
+    s_game_setup.first_serve
   );
 
   game_summary_layer = layer_create(GRect(0, 0, frame.size.w, frame.size.h));
