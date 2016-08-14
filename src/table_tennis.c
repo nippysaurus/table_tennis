@@ -9,6 +9,7 @@ TableTennis* table_tennis_create(GameLength game_length, TeamNumber starting_tea
   table_tennis->total_score = 0;
   table_tennis->winner = NO_TEAM;
   table_tennis->overtime = false;
+  table_tennis->game_length = game_length;
 
   table_tennis->teams[TEAM_1].score = 0;
   table_tennis->teams[TEAM_1].serving = false;
@@ -48,7 +49,10 @@ void table_tennis_increment_score(TableTennis* table_tennis, TeamNumber team_num
   );
 
   // calculate if entering overtime
-  if (table_tennis->teams[TEAM_1].score == 10 && table_tennis->teams[TEAM_2].score == 10) {
+  if (
+    table_tennis->teams[TEAM_1].score == (table_tennis->game_length - 1) &&
+    table_tennis->teams[TEAM_2].score == (table_tennis->game_length - 1)
+  ) {
     table_tennis->overtime = true;
   }
 
@@ -82,11 +86,11 @@ void table_tennis_update_winner(TableTennis* table_tennis) {
   Team* team1 = &table_tennis->teams[TEAM_1];
   Team* team2 = &table_tennis->teams[TEAM_2];
 
-  if (team1->score >= 11 && (team1->score - team2->score) >= 2) {
+  if (team1->score >= table_tennis->game_length && (team1->score - team2->score) >= 2) {
     table_tennis->winner = TEAM_1;
   }
 
-  if (team2->score >= 11 && (team2->score - team1->score) >= 2) {
+  if (team2->score >= table_tennis->game_length && (team2->score - team1->score) >= 2) {
     table_tennis->winner = TEAM_2;
   }
 }

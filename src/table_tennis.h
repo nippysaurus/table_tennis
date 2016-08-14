@@ -51,6 +51,7 @@ typedef struct {
   TeamNumber winner;
   int total_score;
   bool overtime;
+  GameLength game_length;
 } TableTennis;
 
 TableTennis* table_tennis_create(GameLength game_length, TeamNumber starting_team /*, GameStateChangeCallbacks table_tennis_change_callbacks */);
