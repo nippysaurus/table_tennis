@@ -181,12 +181,16 @@ void game_setup_window_create(GameSetupReadyCallback game_setup_ready_callback) 
   game_length_option_labels[0] = "11";
   game_length_option_labels[1] = "21";
 
+  s_game_setup.game_length = game_length_options[currently_selected_game_length_index];
+
   // first serve state
   currently_selected_first_serve_index = 0;
   first_serve_options[0] = TEAM_1;
   first_serve_options[1] = TEAM_2;
   first_serve_option_labels[0] = "Opponent";
   first_serve_option_labels[1] = "You";
+
+  s_game_setup.first_serve = first_serve_options[currently_selected_first_serve_index];
 
   // serve change vibration
   currently_selected_serve_change_option_index = 0;
@@ -197,6 +201,8 @@ void game_setup_window_create(GameSetupReadyCallback game_setup_ready_callback) 
   serve_change_option_labels[1] = "bzzt";
   serve_change_option_labels[2] = "bzzt bzzt";
 
+  s_game_setup.serve_change = serve_change_options[currently_selected_serve_change_option_index];
+
   // game over vibration
   currently_selected_game_over_option_index = 0;
   game_over_options[0] = NONE;
@@ -205,6 +211,8 @@ void game_setup_window_create(GameSetupReadyCallback game_setup_ready_callback) 
   game_over_option_labels[0] = "-";
   game_over_option_labels[1] = "bzzt";
   game_over_option_labels[2] = "bzzt bzzt";
+
+  s_game_setup.game_over = game_over_options[currently_selected_game_over_option_index];
 
   s_game_setup_window = window_create();
 
