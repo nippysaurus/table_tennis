@@ -8,7 +8,7 @@
 
 START_TEST (two_player_starting_state)
 {
-  TableTennis* table_tennis = table_tennis_create(SHORT_GAME, TEAM_1 /*, (GameStateChangeCallbacks){} */);
+  TableTennis* table_tennis = table_tennis_create(SHORT_GAME, TEAM_1);
 
   // check initial game state
   ck_assert_int_eq(table_tennis->total_score, 0);
@@ -30,7 +30,7 @@ END_TEST
 
 START_TEST (two_player_simple)
 {
-  TableTennis* table_tennis = table_tennis_create(SHORT_GAME, TEAM_1 /*, (GameStateChangeCallbacks){} */);
+  TableTennis* table_tennis = table_tennis_create(SHORT_GAME, TEAM_1);
 
   // play first rally and score player 1
   table_tennis_increment_score(table_tennis, TEAM_1); // 1-0
@@ -96,7 +96,7 @@ END_TEST
 
 START_TEST (two_player_overtime)
 {
-  TableTennis* table_tennis = table_tennis_create(SHORT_GAME, TEAM_1 /*, (GameStateChangeCallbacks){} */);
+  TableTennis* table_tennis = table_tennis_create(SHORT_GAME, TEAM_1);
 
   // play until special endgame (win by two) conditions are met
   table_tennis_increment_score(table_tennis, TEAM_1); // 1-0
