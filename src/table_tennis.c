@@ -1,4 +1,3 @@
-#include <pebble.h>
 #include "table_tennis.h"
 
 void table_tennis_update_team_serving_state(TableTennis* table_tennis, TeamNumber starting_team);
