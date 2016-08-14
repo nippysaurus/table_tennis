@@ -1,8 +1,6 @@
 #include <pebble.h>
 #include "table_tennis.h"
 
-#define DEBUG
-
 void table_tennis_update_team_serving_state(TableTennis* table_tennis, TeamNumber starting_team);
 void table_tennis_update_winner(TableTennis* table_tennis);
 
