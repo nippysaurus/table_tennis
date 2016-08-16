@@ -27,8 +27,8 @@ char* player_serve_option_labels[3];
 
 // serve change vibration
 int currently_selected_serve_change_option_index;
-VibrateOption serve_change_options[3];
-char* serve_change_option_labels[3];
+VibrateOption serve_change_options[1];
+char* serve_change_option_labels[1];
 
 // game over vibration
 int currently_selected_game_over_option_index;
@@ -228,11 +228,11 @@ void game_setup_window_create(GameSetupReadyCallback game_setup_ready_callback) 
   // serve change vibration
   currently_selected_serve_change_option_index = 0;
   serve_change_options[0] = NONE;
-  serve_change_options[1] = SINGLE;
-  serve_change_options[2] = DOUBLE;
+  //serve_change_options[1] = SINGLE;
+  //serve_change_options[2] = DOUBLE;
   serve_change_option_labels[0] = "-";
-  serve_change_option_labels[1] = "bzzt";
-  serve_change_option_labels[2] = "bzzt bzzt";
+  //serve_change_option_labels[1] = "bzzt";
+  //serve_change_option_labels[2] = "bzzt bzzt";
 
   s_game_setup.serve_change = serve_change_options[currently_selected_serve_change_option_index];
 
