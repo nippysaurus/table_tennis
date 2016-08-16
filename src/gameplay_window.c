@@ -122,7 +122,8 @@ void gameplay_window_create(GameSetup game_setup, game_over_callback game_over_c
 
   // set action bar icons
   action_bar_layer_set_icon(s_main_window_action_bar, BUTTON_ID_UP, s_bitmap_button_increment_score);
-  action_bar_layer_set_icon(s_main_window_action_bar, BUTTON_ID_SELECT, s_bitmap_button_more);
+  // just hiding this action bar icon until it is actually implemented
+  //action_bar_layer_set_icon(s_main_window_action_bar, BUTTON_ID_SELECT, s_bitmap_button_more);
   action_bar_layer_set_icon(s_main_window_action_bar, BUTTON_ID_DOWN, s_bitmap_button_increment_score);
 
   // set action bar click provider
