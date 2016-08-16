@@ -85,10 +85,10 @@ static void game_summary_layer_display_updated_state() {
     bottom_player_fg = GColorBlack;
     #endif
 
-    if (s_game_setup.serve_change == SINGLE) {
+    if (s_game_setup.player_serve == SINGLE) {
       vibes_short_pulse();
     }
-    if (s_game_setup.serve_change == DOUBLE) {
+    if (s_game_setup.player_serve == DOUBLE) {
       vibes_double_pulse();
     }
 

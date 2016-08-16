@@ -11,6 +11,7 @@ typedef enum {
 typedef struct {
   GameLength game_length;
   TeamNumber first_serve;
+  VibrateOption player_serve;
   VibrateOption serve_change;
   VibrateOption game_over;
 } GameSetup;
