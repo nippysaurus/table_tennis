@@ -8,7 +8,15 @@ static GameSetup s_game_setup;
 static GameSetupReadyCallback s_game_setup_ready_callback;
 
 #define NUM_MENU_SECTIONS 1
-#define NUM_FIRST_MENU_ITEMS 6
+#define NUM_FIRST_MENU_ITEMS 7
+
+typedef enum {
+  CURRENTLY_SELECTED_GAME_LENGTH_INDEX,
+  CURRENTLY_SELECTED_FIRST_SERVE_INDEX,
+  CURRENTLY_SELECTED_PLAYER_SERVE_OPTION_INDEX,
+  CURRENTLY_SELECTED_SERVE_CHANGE_OPTION_INDEX,
+  CURRENTLY_SELECTED_GAME_OVER_OPTION_INDEX
+} PersistanceKeys;
 
 // game length state
 int currently_selected_game_length_index;
@@ -152,6 +160,10 @@ static void menu_select_callback(MenuLayer *menu_layer, MenuIndex *cell_index, v
       if (currently_selected_game_length_index == sizeof(game_length_options)) {
         currently_selected_game_length_index = 0;
       }
+      persist_write_int(
+        CURRENTLY_SELECTED_GAME_LENGTH_INDEX,
+        currently_selected_game_length_index
+      );
       s_game_setup.game_length = game_length_options[currently_selected_game_length_index];
       layer_mark_dirty(menu_layer_get_layer(menu_layer));
       break;
@@ -160,6 +172,10 @@ static void menu_select_callback(MenuLayer *menu_layer, MenuIndex *cell_index, v
       if (currently_selected_first_serve_index == sizeof(first_serve_options)) {
         currently_selected_first_serve_index = 0;
       }
+      persist_write_int(
+        CURRENTLY_SELECTED_FIRST_SERVE_INDEX,
+        currently_selected_first_serve_index
+      );
       s_game_setup.first_serve = first_serve_options[currently_selected_first_serve_index];
       layer_mark_dirty(menu_layer_get_layer(menu_layer));
       break;
@@ -168,6 +184,10 @@ static void menu_select_callback(MenuLayer *menu_layer, MenuIndex *cell_index, v
       if (currently_selected_player_serve_option_index == sizeof(player_serve_options)) {
         currently_selected_player_serve_option_index = 0;
       }
+      persist_write_int(
+        CURRENTLY_SELECTED_PLAYER_SERVE_OPTION_INDEX,
+        currently_selected_player_serve_option_index
+      );
       s_game_setup.player_serve = player_serve_options[currently_selected_player_serve_option_index];
       layer_mark_dirty(menu_layer_get_layer(menu_layer));
       break;
@@ -176,6 +196,10 @@ static void menu_select_callback(MenuLayer *menu_layer, MenuIndex *cell_index, v
       if (currently_selected_serve_change_option_index == sizeof(serve_change_options)) {
         currently_selected_serve_change_option_index = 0;
       }
+      persist_write_int(
+        CURRENTLY_SELECTED_SERVE_CHANGE_OPTION_INDEX,
+        currently_selected_serve_change_option_index
+      );
       s_game_setup.serve_change = serve_change_options[currently_selected_serve_change_option_index];
       layer_mark_dirty(menu_layer_get_layer(menu_layer));
       break;
@@ -184,6 +208,10 @@ static void menu_select_callback(MenuLayer *menu_layer, MenuIndex *cell_index, v
       if (currently_selected_game_over_option_index == sizeof(game_over_options)) {
         currently_selected_game_over_option_index = 0;
       }
+      persist_write_int(
+        CURRENTLY_SELECTED_GAME_OVER_OPTION_INDEX,
+        currently_selected_game_over_option_index
+      );
       s_game_setup.game_over = game_over_options[currently_selected_game_over_option_index];
       layer_mark_dirty(menu_layer_get_layer(menu_layer));
       break;
@@ -197,7 +225,11 @@ void game_setup_window_create(GameSetupReadyCallback game_setup_ready_callback) 
   s_game_setup_ready_callback = game_setup_ready_callback;
 
   // game length state
-  currently_selected_game_length_index = 0;
+  if (persist_exists(CURRENTLY_SELECTED_GAME_LENGTH_INDEX)) {
+    currently_selected_game_length_index = persist_read_int(CURRENTLY_SELECTED_GAME_LENGTH_INDEX);
+  } else {
+    currently_selected_game_length_index = 0;
+  }
   game_length_options[0] = SHORT_GAME;
   game_length_options[1] = LONG_GAME;
   game_length_option_labels[0] = "11";
@@ -206,7 +238,11 @@ void game_setup_window_create(GameSetupReadyCallback game_setup_ready_callback) 
   s_game_setup.game_length = game_length_options[currently_selected_game_length_index];
 
   // first serve state
-  currently_selected_first_serve_index = 0;
+  if (persist_exists(CURRENTLY_SELECTED_FIRST_SERVE_INDEX)) {
+    currently_selected_first_serve_index = persist_read_int(CURRENTLY_SELECTED_FIRST_SERVE_INDEX);
+  } else {
+    currently_selected_first_serve_index = 0;
+  }
   first_serve_options[0] = TEAM_1;
   first_serve_options[1] = TEAM_2;
   first_serve_option_labels[0] = "Opponent";
@@ -215,7 +251,11 @@ void game_setup_window_create(GameSetupReadyCallback game_setup_ready_callback) 
   s_game_setup.first_serve = first_serve_options[currently_selected_first_serve_index];
 
   // serve change vibration
-  currently_selected_player_serve_option_index = 0;
+  if (persist_exists(CURRENTLY_SELECTED_PLAYER_SERVE_OPTION_INDEX)) {
+    currently_selected_player_serve_option_index = persist_read_int(CURRENTLY_SELECTED_PLAYER_SERVE_OPTION_INDEX);
+  } else {
+    currently_selected_player_serve_option_index = 0;
+  }
   player_serve_options[0] = NONE;
   player_serve_options[1] = SINGLE;
   player_serve_options[2] = DOUBLE;
@@ -226,7 +266,11 @@ void game_setup_window_create(GameSetupReadyCallback game_setup_ready_callback) 
   s_game_setup.player_serve = player_serve_options[currently_selected_player_serve_option_index];
 
   // serve change vibration
-  currently_selected_serve_change_option_index = 0;
+  if (persist_exists(CURRENTLY_SELECTED_SERVE_CHANGE_OPTION_INDEX)) {
+    currently_selected_serve_change_option_index = persist_read_int(CURRENTLY_SELECTED_SERVE_CHANGE_OPTION_INDEX);
+  } else {
+    currently_selected_serve_change_option_index = 0;
+  }
   serve_change_options[0] = NONE;
   //serve_change_options[1] = SINGLE;
   //serve_change_options[2] = DOUBLE;
@@ -237,7 +281,11 @@ void game_setup_window_create(GameSetupReadyCallback game_setup_ready_callback) 
   s_game_setup.serve_change = serve_change_options[currently_selected_serve_change_option_index];
 
   // game over vibration
-  currently_selected_game_over_option_index = 0;
+  if (persist_exists(CURRENTLY_SELECTED_GAME_OVER_OPTION_INDEX)) {
+    currently_selected_game_over_option_index = persist_read_int(CURRENTLY_SELECTED_GAME_OVER_OPTION_INDEX);
+  } else {
+    currently_selected_game_over_option_index = 0;
+  }
   game_over_options[0] = NONE;
   game_over_options[1] = SINGLE;
   game_over_options[2] = DOUBLE;
