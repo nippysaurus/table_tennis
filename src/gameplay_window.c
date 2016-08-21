@@ -67,10 +67,10 @@ static void game_summary_layer_display_updated_state() {
     bottom_player_bg = GColorWhite;
     bottom_player_fg = GColorBlack;
     #elif defined(PBL_COLOR)
-    top_player_bg = GColorMediumAquamarine;
-    top_player_fg = GColorBlack;
+    top_player_bg = GColorBlue;
+    top_player_fg = GColorWhite;
     bottom_player_bg = GColorWhite;
-    bottom_player_fg = GColorBlack;
+    bottom_player_fg = GColorBlue;
     #endif
   } else {
     #if defined(PBL_BW)
@@ -80,9 +80,9 @@ static void game_summary_layer_display_updated_state() {
     bottom_player_fg = GColorBlack;
     #elif defined(PBL_COLOR)
     top_player_bg = GColorWhite;
-    top_player_fg = GColorBlack;
-    bottom_player_bg = GColorMediumAquamarine;
-    bottom_player_fg = GColorBlack;
+    top_player_fg = GColorBlue;
+    bottom_player_bg = GColorBlue;
+    bottom_player_fg = GColorWhite;
     #endif
 
     if (s_game_setup.player_serve == SINGLE) {
