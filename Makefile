@@ -19,6 +19,12 @@ build:
 run_basalt:
 	pebble install --emulator basalt
 
+run_aplite:
+	pebble install --emulator aplite
+
+run_chalk:
+	pebble install --emulator chalk
+
 test: src/table_tennis.o tests/game_state_tests.o
 	$(CC) -o game_state_tests tests/game_state_tests.o src/table_tennis.o /usr/local/lib/libcheck.a $(CFLAGS)
 	./game_state_tests
