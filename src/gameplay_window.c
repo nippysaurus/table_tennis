@@ -113,28 +113,9 @@ void gameplay_window_create(GameSetup game_setup, game_over_callback game_over_c
 
   s_main_window = window_create();
 
-  // create action bar
-  s_main_window_action_bar = action_bar_layer_create();
-
-  // load action bar icons assets
-  s_bitmap_button_increment_score = gbitmap_create_with_resource(RESOURCE_ID_BUTTON_INCREMENT_SCORE);
-  s_bitmap_button_more = gbitmap_create_with_resource(RESOURCE_ID_BUTTON_MORE);
-
-  // set action bar icons
-  action_bar_layer_set_icon(s_main_window_action_bar, BUTTON_ID_UP, s_bitmap_button_increment_score);
-  // just hiding this action bar icon until it is actually implemented
-  //action_bar_layer_set_icon(s_main_window_action_bar, BUTTON_ID_SELECT, s_bitmap_button_more);
-  action_bar_layer_set_icon(s_main_window_action_bar, BUTTON_ID_DOWN, s_bitmap_button_increment_score);
-
-  // set action bar click provider
-  action_bar_layer_set_click_config_provider(s_main_window_action_bar, click_config_provider);
-
-  // add action bar to window
-  action_bar_layer_add_to_window(s_main_window_action_bar, s_main_window);
-
-
-
-
+  //
+  // create game summary
+  //
 
   // Get the bounds of the Window
   Layer* window_layer = window_get_root_layer(s_main_window);
@@ -143,7 +124,8 @@ void gameplay_window_create(GameSetup game_setup, game_over_callback game_over_c
   GRect frame = GRect(
     0,
     0,
-    window_bounds.size.w - ACTION_BAR_WIDTH,
+    //window_bounds.size.w - ACTION_BAR_WIDTH,
+    window_bounds.size.w,
     window_bounds.size.h
   );
 
@@ -172,7 +154,7 @@ void gameplay_window_create(GameSetup game_setup, game_over_callback game_over_c
   layer_add_child(game_summary_layer, text_layer_get_layer(text_layer_t_bg));
 
   // top text
-  text_layer_t = text_layer_create(GRect(10, 10, frame.size.w - 20, SCORE_TEXT_LAYER_HEIGHT));
+  text_layer_t = text_layer_create(GRect(10, 10, frame.size.w - PBL_IF_RECT_ELSE(ACTION_BAR_WIDTH, 0) - 20, SCORE_TEXT_LAYER_HEIGHT));
   text_layer_set_overflow_mode(text_layer_t, GTextOverflowModeWordWrap);
   text_layer_set_text_alignment(text_layer_t, GTextAlignmentCenter);
   text_layer_set_font(text_layer_t, fonts_get_system_font(FONT_KEY_BITHAM_42_BOLD));
@@ -183,7 +165,7 @@ void gameplay_window_create(GameSetup game_setup, game_over_callback game_over_c
   layer_add_child(game_summary_layer, text_layer_get_layer(text_layer_b_bg));
 
   // bottom text
-  text_layer_b = text_layer_create(GRect(10, (frame.size.h - SCORE_TEXT_LAYER_HEIGHT) - 10, frame.size.w - 20, SCORE_TEXT_LAYER_HEIGHT));
+  text_layer_b = text_layer_create(GRect(10, (frame.size.h - SCORE_TEXT_LAYER_HEIGHT) - 10, frame.size.w - PBL_IF_RECT_ELSE(ACTION_BAR_WIDTH, 0) - 20, SCORE_TEXT_LAYER_HEIGHT));
   text_layer_set_overflow_mode(text_layer_b, GTextOverflowModeWordWrap);
   text_layer_set_text_alignment(text_layer_b, GTextAlignmentCenter);
   text_layer_set_font(text_layer_b, fonts_get_system_font(FONT_KEY_BITHAM_42_BOLD));
@@ -196,6 +178,31 @@ void gameplay_window_create(GameSetup game_setup, game_over_callback game_over_c
     window_get_root_layer(s_main_window),
     game_summary_layer
   );
+
+
+
+  // 
+  // create action bar
+  //
+
+  s_main_window_action_bar = action_bar_layer_create();
+
+  // load action bar icons assets
+  s_bitmap_button_increment_score = gbitmap_create_with_resource(RESOURCE_ID_BUTTON_INCREMENT_SCORE);
+  s_bitmap_button_more = gbitmap_create_with_resource(RESOURCE_ID_BUTTON_MORE);
+
+  // set action bar icons
+  action_bar_layer_set_icon(s_main_window_action_bar, BUTTON_ID_UP, s_bitmap_button_increment_score);
+  // just hiding this action bar icon until it is actually implemented
+  //action_bar_layer_set_icon(s_main_window_action_bar, BUTTON_ID_SELECT, s_bitmap_button_more);
+  action_bar_layer_set_icon(s_main_window_action_bar, BUTTON_ID_DOWN, s_bitmap_button_increment_score);
+
+  // set action bar click provider
+  action_bar_layer_set_click_config_provider(s_main_window_action_bar, click_config_provider);
+
+  // add action bar to window
+  action_bar_layer_add_to_window(s_main_window_action_bar, s_main_window);
+
 
 
 
