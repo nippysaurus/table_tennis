@@ -46,7 +46,11 @@ static void click_config_provider(void *context) {
 static void game_summary_layer_display_updated_state() {
   // handle game over logic
   if (game_state->winner != NO_TEAM) {
-    game_over(game_state->winner);
+    game_over(
+      game_state->winner,
+      game_state->teams[TEAM_1].score,
+      game_state->teams[TEAM_2].score
+    );
     if (s_game_setup.game_over == SINGLE) {
       vibes_short_pulse();
     }
@@ -157,7 +161,7 @@ void gameplay_window_create(GameSetup game_setup, game_over_callback game_over_c
   text_layer_t = text_layer_create(GRect(10, 10, frame.size.w - PBL_IF_RECT_ELSE(ACTION_BAR_WIDTH, 0) - 20, SCORE_TEXT_LAYER_HEIGHT));
   text_layer_set_overflow_mode(text_layer_t, GTextOverflowModeWordWrap);
   text_layer_set_text_alignment(text_layer_t, GTextAlignmentCenter);
-  text_layer_set_font(text_layer_t, fonts_get_system_font(FONT_KEY_BITHAM_42_BOLD));
+  text_layer_set_font(text_layer_t, fonts_get_system_font(FONT_KEY_LECO_42_NUMBERS));
   layer_add_child(game_summary_layer, text_layer_get_layer(text_layer_t));
 
   // bottom background
@@ -168,7 +172,7 @@ void gameplay_window_create(GameSetup game_setup, game_over_callback game_over_c
   text_layer_b = text_layer_create(GRect(10, (frame.size.h - SCORE_TEXT_LAYER_HEIGHT) - 10, frame.size.w - PBL_IF_RECT_ELSE(ACTION_BAR_WIDTH, 0) - 20, SCORE_TEXT_LAYER_HEIGHT));
   text_layer_set_overflow_mode(text_layer_b, GTextOverflowModeWordWrap);
   text_layer_set_text_alignment(text_layer_b, GTextAlignmentCenter);
-  text_layer_set_font(text_layer_b, fonts_get_system_font(FONT_KEY_BITHAM_42_BOLD));
+  text_layer_set_font(text_layer_b, fonts_get_system_font(FONT_KEY_LECO_42_NUMBERS));
   layer_add_child(game_summary_layer, text_layer_get_layer(text_layer_b));
 
   game_summary_layer_display_updated_state();

@@ -24,6 +24,16 @@
                     "name": "BUTTON_INCREMENT_SCORE",
                     "targetPlatforms": null,
                     "type": "bitmap"
+                },
+                {
+                  "type": "raw",
+                  "name": "WINNER_ICON",
+                  "file": "images/winner_icon.pdc"
+                },
+                {
+                  "type": "raw",
+                  "name": "LOSER_ICON",
+                  "file": "images/loser_icon.pdc"
                 }
             ]
         },

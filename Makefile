@@ -7,13 +7,17 @@ CFLAGS=-I.
 src/table_tennis.o:
 	gcc -c -o src/table_tennis.o src/table_tennis.c
 
+%.pdc: %.svg
+	python tools/svg2pdc.py $< -o $@
+
 clean:
 	rm -f src/*.o
 	rm -f tests/*.o
 	rm -f game_state_tests
+	rm -f resources/images/*.pdc
 	pebble clean
 
-build:
+build: resources/images/loser_icon.pdc resources/images/winner_icon.pdc
 	pebble build
 
 run_basalt:
