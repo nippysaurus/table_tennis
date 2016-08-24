@@ -41,8 +41,6 @@ static void click_config_provider(void *context) {
   window_single_click_subscribe(BUTTON_ID_DOWN, (ClickHandler) increment_bottom_player);
 }
 
-
-
 static void game_summary_layer_display_updated_state() {
   // handle game over logic
   if (game_state->winner != NO_TEAM) {
@@ -128,23 +126,9 @@ void gameplay_window_create(GameSetup game_setup, game_over_callback game_over_c
   GRect frame = GRect(
     0,
     0,
-    //window_bounds.size.w - ACTION_BAR_WIDTH,
     window_bounds.size.w,
     window_bounds.size.h
   );
-
-  //char str[80];
-  //snprintf(str, 80, "%d", frame.size.w);
-  //APP_LOG(APP_LOG_LEVEL_DEBUG, str);
-  //snprintf(str, 80, "%d", frame.size.h);
-  //APP_LOG(APP_LOG_LEVEL_DEBUG, str);
-
-  //text_layer_t_bg = text_layer_create(GRect(0, 0, frame.size.w, frame.size.h));
-  //text_layer_set_background_color(text_layer_t_bg, GColorBlack);
-  //layer_add_child(
-  //  window_get_root_layer(s_main_window),
-  //  text_layer_get_layer(text_layer_t_bg)
-  //);
 
   game_state = table_tennis_create(
     s_game_setup.game_length,
@@ -183,8 +167,6 @@ void gameplay_window_create(GameSetup game_setup, game_over_callback game_over_c
     game_summary_layer
   );
 
-
-
   // 
   // create action bar
   //
@@ -207,10 +189,6 @@ void gameplay_window_create(GameSetup game_setup, game_over_callback game_over_c
   // add action bar to window
   action_bar_layer_add_to_window(s_main_window_action_bar, s_main_window);
 
-
-
-
-
   window_stack_push(s_main_window, false);
 }
 
@@ -223,8 +201,6 @@ void gameplay_window_destroy() {
 
   // destroy action bar later
   action_bar_layer_destroy(s_main_window_action_bar);
-
-
 
   text_layer_destroy(text_layer_t);
   text_layer_destroy(text_layer_t_bg);
