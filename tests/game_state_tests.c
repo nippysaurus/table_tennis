@@ -13,6 +13,7 @@ START_TEST (two_player_short_game_starting_state)
   // check initial game state
   ck_assert_int_eq(table_tennis->total_score, 0);
   ck_assert(table_tennis->winner == NO_TEAM);
+  ck_assert(table_tennis->serve_just_changed == false);
   // player 1
   ck_assert_int_eq(table_tennis->teams[TEAM_1].score, 0);
   ck_assert_str_eq(table_tennis->teams[TEAM_1].score_formatted, "0");
@@ -37,6 +38,7 @@ START_TEST (two_player_short_game_simple)
 
   // check state (player 1 score should have incremented)
   ck_assert_int_eq(table_tennis->total_score, 1);
+  ck_assert(table_tennis->serve_just_changed == false);
   // player 1
   ck_assert_int_eq(table_tennis->teams[TEAM_1].score, 1);
   ck_assert_str_eq(table_tennis->teams[TEAM_1].score_formatted, "1");
@@ -53,6 +55,7 @@ START_TEST (two_player_short_game_simple)
 
   // check state (player 2 score should have incremented, and should they should now be serving)
   ck_assert_int_eq(table_tennis->total_score, 2);
+  ck_assert(table_tennis->serve_just_changed == true);
   // player 1
   ck_assert_int_eq(table_tennis->teams[TEAM_1].score, 1);
   ck_assert_str_eq(table_tennis->teams[TEAM_1].score_formatted, "1");

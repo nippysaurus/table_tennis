@@ -9,6 +9,7 @@ TableTennis* table_tennis_create(GameLength game_length, TeamNumber starting_tea
   table_tennis->total_score = 0;
   table_tennis->winner = NO_TEAM;
   table_tennis->overtime = false;
+  table_tennis->serve_just_changed = false;
   table_tennis->game_length = game_length;
 
   table_tennis->teams[TEAM_1].score = 0;
@@ -56,9 +57,14 @@ void table_tennis_increment_score(TableTennis* table_tennis, TeamNumber team_num
     table_tennis->overtime = true;
   }
 
+  bool team_1_serving = table_tennis->teams[TEAM_1].serving;
+
   // calculate serving state
   table_tennis_update_team_serving_state(table_tennis, TEAM_1);
   table_tennis_update_team_serving_state(table_tennis, TEAM_2);
+
+  // calculate serve just changed
+  table_tennis->serve_just_changed = team_1_serving != table_tennis->teams[TEAM_1].serving;
 
   // calculate winner
   table_tennis_update_winner(table_tennis);

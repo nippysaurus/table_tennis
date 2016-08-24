@@ -27,6 +27,7 @@ typedef struct {
   TeamNumber winner;
   int total_score;
   bool overtime;
+  bool serve_just_changed;
   GameLength game_length;
 } TableTennis;
 

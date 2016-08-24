@@ -58,6 +58,15 @@ static void game_summary_layer_display_updated_state() {
     return;
   }
 
+  if (game_state->serve_just_changed) {
+    if (s_game_setup.serve_change == SINGLE) {
+      vibes_short_pulse();
+    }
+    if (s_game_setup.serve_change == DOUBLE) {
+      vibes_double_pulse();
+    }
+  }
+
   GColor8 top_player_bg;
   GColor8 top_player_fg;
   GColor8 bottom_player_bg;
