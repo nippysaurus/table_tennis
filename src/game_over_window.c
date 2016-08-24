@@ -41,19 +41,22 @@ void game_over_window_create(bool won, int team_1_score, int team_2_score) {
 
   snprintf(s_final_score, 7, "%d:%d", team_1_score, team_2_score);
 
+  GColor color_winner = PBL_IF_COLOR_ELSE(GColorGreen,GColorWhite);
+  GColor color_loser = PBL_IF_COLOR_ELSE(GColorRed,GColorWhite);
+
   if (won) {
-    window_set_background_color(s_game_over_window, GColorGreen);
+    window_set_background_color(s_game_over_window, color_winner);
     text_layer_set_text(s_outcome_text_layer, "YOU WIN");
-    text_layer_set_background_color(s_outcome_text_layer, GColorGreen);
+    text_layer_set_background_color(s_outcome_text_layer, color_winner);
     text_layer_set_text(s_score_text_layer, s_final_score);
-    text_layer_set_background_color(s_score_text_layer, GColorGreen);
+    text_layer_set_background_color(s_score_text_layer, color_winner);
     s_icon_image = gdraw_command_image_create_with_resource(RESOURCE_ID_WINNER_ICON);
   } else {
-    window_set_background_color(s_game_over_window, GColorRed);
+    window_set_background_color(s_game_over_window, color_loser);
     text_layer_set_text(s_outcome_text_layer, "YOU LOSE");
-    text_layer_set_background_color(s_outcome_text_layer, GColorRed);
+    text_layer_set_background_color(s_outcome_text_layer, color_loser);
     text_layer_set_text(s_score_text_layer, s_final_score);
-    text_layer_set_background_color(s_score_text_layer, GColorRed);
+    text_layer_set_background_color(s_score_text_layer, color_loser);
     s_icon_image = gdraw_command_image_create_with_resource(RESOURCE_ID_LOSER_ICON);
   }
 
