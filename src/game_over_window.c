@@ -85,5 +85,7 @@ void game_over_window_destroy() {
   window_stack_remove(s_game_over_window, false);
   text_layer_destroy(s_outcome_text_layer);
   text_layer_destroy(s_score_text_layer);
+  layer_destroy(s_icon_layer);
+  gdraw_command_image_destroy(s_icon_image);
   window_destroy(s_game_over_window);
 }

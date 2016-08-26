@@ -18,7 +18,7 @@ static void game_over(TeamNumber winning_team, int team_1_score, int team_2_scor
     team_1_score,
     team_2_score
   );
-  game_over_window_visible = false;
+  game_over_window_visible = true;
 }
 
 static void game_setup_ready_callback(GameSetup game_setup) {
