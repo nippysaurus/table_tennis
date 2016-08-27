@@ -14,8 +14,8 @@
         "resources": {
             "media": [
                 {
-                    "file": "images/action_bar_button_more.png",
-                    "name": "BUTTON_MORE",
+                    "file": "images/action_bar_button_undo.png",
+                    "name": "BUTTON_UNDO",
                     "targetPlatforms": null,
                     "type": "bitmap"
                 },

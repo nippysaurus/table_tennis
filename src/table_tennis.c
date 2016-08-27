@@ -2,6 +2,7 @@
 
 void table_tennis_update_team_serving_state(TableTennis* table_tennis, TeamNumber starting_team);
 void table_tennis_update_winner(TableTennis* table_tennis);
+void table_tennis_update_calculated_fields(TableTennis* table_tennis);
 
 TableTennis* table_tennis_create(GameLength game_length, TeamNumber starting_team) {
   TableTennis* table_tennis = malloc(sizeof(TableTennis));
@@ -9,6 +10,7 @@ TableTennis* table_tennis_create(GameLength game_length, TeamNumber starting_tea
   table_tennis->total_score = 0;
   table_tennis->winner = NO_TEAM;
   table_tennis->overtime = false;
+  table_tennis->total_serve_count = 0;
   table_tennis->serve_just_changed = false;
   table_tennis->game_length = game_length;
 
@@ -33,21 +35,33 @@ void table_tennis_destroy(TableTennis* table_tennis) {
 }
 
 void table_tennis_increment_score(TableTennis* table_tennis, TeamNumber team_number) {
-  // update general game state
-  table_tennis->total_score += 1;
+  table_tennis->total_score++;
+  table_tennis->total_serve_count++;
+  table_tennis->teams[team_number].score++;
 
-  Team* team = &(table_tennis->teams[team_number]);
+  table_tennis->history[table_tennis->total_serve_count] = team_number;
 
-  // update team score
-  team->score += 1;
+  table_tennis_update_calculated_fields(table_tennis);
+}
 
+void table_tennis_undo_score(TableTennis* table_tennis) {
+  if (table_tennis->total_serve_count == 0) {
+    return;
+  }
+
+  TeamNumber team_number = table_tennis->history[table_tennis->total_serve_count];
+
+  table_tennis->total_score--;
+  table_tennis->total_serve_count--;
+  table_tennis->teams[team_number].score--;
+
+  table_tennis_update_calculated_fields(table_tennis);
+}
+
+void table_tennis_update_calculated_fields(TableTennis* table_tennis) {
   // update team score formatted
-  snprintf(
-    team->score_formatted,
-    4,
-    "%d",
-    team->score
-  );
+  snprintf(table_tennis->teams[TEAM_1].score_formatted, 4, "%d", table_tennis->teams[TEAM_1].score);
+  snprintf(table_tennis->teams[TEAM_2].score_formatted, 4, "%d", table_tennis->teams[TEAM_2].score);
 
   // calculate if entering overtime
   if (

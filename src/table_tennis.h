@@ -22,9 +22,13 @@ typedef struct {
   bool serving_first;
 } Team;
 
+#define HISTORY_LENGTH 100
+
 typedef struct {
   Team teams[2];
   TeamNumber winner;
+  int total_serve_count;
+  TeamNumber history[HISTORY_LENGTH];
   int total_score;
   bool overtime;
   bool serve_just_changed;
@@ -34,3 +38,4 @@ typedef struct {
 TableTennis* table_tennis_create(GameLength game_length, TeamNumber starting_team);
 void table_tennis_destroy(TableTennis* table_tennis);
 void table_tennis_increment_score(TableTennis* table_tennis, TeamNumber team);
+void table_tennis_undo_score(TableTennis* table_tennis);

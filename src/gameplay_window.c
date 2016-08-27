@@ -8,7 +8,7 @@ static Window *s_main_window;
 // action bar
 static ActionBarLayer *s_main_window_action_bar;
 static GBitmap *s_bitmap_button_increment_score;
-static GBitmap *s_bitmap_button_more;
+static GBitmap *s_bitmap_button_undo;
 
 // game summary layers
 Layer *game_summary_layer;
@@ -36,8 +36,14 @@ static void increment_bottom_player() {
   game_summary_layer_display_updated_state();
 }
 
+static void undo() {
+  table_tennis_undo_score(game_state);
+  game_summary_layer_display_updated_state();
+}
+
 static void click_config_provider(void *context) {
   window_single_click_subscribe(BUTTON_ID_UP, (ClickHandler) increment_top_player);
+  window_single_click_subscribe(BUTTON_ID_SELECT, (ClickHandler) undo);
   window_single_click_subscribe(BUTTON_ID_DOWN, (ClickHandler) increment_bottom_player);
 }
 
@@ -184,12 +190,12 @@ void gameplay_window_create(GameSetup game_setup, game_over_callback game_over_c
 
   // load action bar icons assets
   s_bitmap_button_increment_score = gbitmap_create_with_resource(RESOURCE_ID_BUTTON_INCREMENT_SCORE);
-  s_bitmap_button_more = gbitmap_create_with_resource(RESOURCE_ID_BUTTON_MORE);
+  s_bitmap_button_undo = gbitmap_create_with_resource(RESOURCE_ID_BUTTON_UNDO);
 
   // set action bar icons
   action_bar_layer_set_icon(s_main_window_action_bar, BUTTON_ID_UP, s_bitmap_button_increment_score);
   // just hiding this action bar icon until it is actually implemented
-  //action_bar_layer_set_icon(s_main_window_action_bar, BUTTON_ID_SELECT, s_bitmap_button_more);
+  action_bar_layer_set_icon(s_main_window_action_bar, BUTTON_ID_SELECT, s_bitmap_button_undo);
   action_bar_layer_set_icon(s_main_window_action_bar, BUTTON_ID_DOWN, s_bitmap_button_increment_score);
 
   // set action bar click provider
@@ -206,7 +212,7 @@ void gameplay_window_destroy() {
 
   // destroy action bar icons
   gbitmap_destroy(s_bitmap_button_increment_score);
-  gbitmap_destroy(s_bitmap_button_more);
+  gbitmap_destroy(s_bitmap_button_undo);
 
   // destroy action bar later
   action_bar_layer_destroy(s_main_window_action_bar);
