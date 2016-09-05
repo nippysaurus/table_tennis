@@ -29,6 +29,9 @@ run_aplite:
 run_chalk:
 	pebble install --emulator chalk
 
+run_diorite:
+	pebble install --emulator diorite
+
 test: src/table_tennis.o tests/game_state_tests.o
 	$(CC) -o game_state_tests tests/game_state_tests.o src/table_tennis.o /usr/local/lib/libcheck.a $(CFLAGS)
 	./game_state_tests

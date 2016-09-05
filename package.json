@@ -1,47 +1,50 @@
 {
-    "author": "nippysaurus@me.com",
-    "dependencies": {},
-    "keywords": [],
-    "name": "table-tennis",
-    "pebble": {
-        "capabilities": [
-            ""
-        ],
-        "displayName": "Table Tennis",
-        "enableMultiJS": true,
-        "messageKeys": [],
-        "projectType": "native",
-        "resources": {
-            "media": [
-                {
-                    "file": "images/action_bar_button_undo.png",
-                    "name": "BUTTON_UNDO",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                    "file": "images/action_bar_button_increment_score.png",
-                    "name": "BUTTON_INCREMENT_SCORE",
-                    "targetPlatforms": null,
-                    "type": "bitmap"
-                },
-                {
-                  "type": "raw",
-                  "name": "WINNER_ICON",
-                  "file": "images/winner_icon.pdc"
-                },
-                {
-                  "type": "raw",
-                  "name": "LOSER_ICON",
-                  "file": "images/loser_icon.pdc"
-                }
-            ]
+  "author": "nippysaurus@me.com",
+  "dependencies": {},
+  "keywords": [],
+  "name": "table-tennis",
+  "pebble": {
+    "displayName": "Table Tennis",
+    "enableMultiJS": true,
+    "messageKeys": [],
+    "projectType": "native",
+    "targetPlatforms": [
+      "aplite",
+      "basalt",
+      "chalk",
+      "diorite"
+    ],
+    "resources": {
+      "media": [
+        {
+          "file": "images/action_bar_button_undo.png",
+          "name": "BUTTON_UNDO",
+          "targetPlatforms": null,
+          "type": "bitmap"
         },
-        "sdkVersion": "3",
-        "uuid": "2081caa7-fe79-4e80-b91e-83b8cbadcef0",
-        "watchapp": {
-            "watchface": false
+        {
+          "file": "images/action_bar_button_increment_score.png",
+          "name": "BUTTON_INCREMENT_SCORE",
+          "targetPlatforms": null,
+          "type": "bitmap"
+        },
+        {
+          "type": "raw",
+          "name": "WINNER_ICON",
+          "file": "images/winner_icon.pdc"
+        },
+        {
+          "type": "raw",
+          "name": "LOSER_ICON",
+          "file": "images/loser_icon.pdc"
         }
+      ]
     },
-    "version": "1.0.0"
+    "sdkVersion": "3",
+    "uuid": "2081caa7-fe79-4e80-b91e-83b8cbadcef0",
+    "watchapp": {
+      "watchface": false
+    }
+  },
+  "version": "1.1.0"
 }
