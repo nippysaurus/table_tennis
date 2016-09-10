@@ -56,18 +56,6 @@ static uint16_t menu_get_num_rows_callback(MenuLayer *menu_layer, uint16_t secti
   }
 }
 
-static int16_t menu_get_header_height_callback(MenuLayer *menu_layer, uint16_t section_index, void *data) {
-  return MENU_CELL_BASIC_HEADER_HEIGHT;
-}
-
-static void menu_draw_header_callback(GContext* ctx, const Layer *cell_layer, uint16_t section_index, void *data) {
-  switch (section_index) {
-    case 0:
-      menu_cell_basic_header_draw(ctx, cell_layer, "Game Setup");
-      break;
-  }
-}
-
 static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuIndex *cell_index, void *data) {
   switch (cell_index->section) {
     case 0:
@@ -306,8 +294,8 @@ void game_setup_window_create(GameSetupReadyCallback game_setup_ready_callback) 
   menu_layer_set_callbacks(s_menu_layer, NULL, (MenuLayerCallbacks){
     .get_num_sections = menu_get_num_sections_callback,
     .get_num_rows = menu_get_num_rows_callback,
-    .get_header_height = PBL_IF_RECT_ELSE(menu_get_header_height_callback, NULL),
-    .draw_header = PBL_IF_RECT_ELSE(menu_draw_header_callback, NULL),
+    .get_header_height = NULL,
+    .draw_header = NULL,
     .draw_row = menu_draw_row_callback,
     .select_click = menu_select_callback
   });
