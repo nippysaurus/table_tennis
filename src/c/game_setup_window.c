@@ -67,7 +67,7 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
               ctx,
               "START GAME",
               fonts_get_system_font(FONT_KEY_GOTHIC_28),
-              GRect(0, 0, size.w, size.h),
+              GRect(0, 2, size.w, size.h),
               GTextOverflowModeTrailingEllipsis,
               GTextAlignmentCenter,
               NULL
@@ -126,7 +126,7 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
               ctx,
               "START GAME",
               fonts_get_system_font(FONT_KEY_GOTHIC_28),
-              GRect(0, 0, size.w, size.h),
+              GRect(0, 2, size.w, size.h),
               GTextOverflowModeTrailingEllipsis,
               GTextAlignmentCenter,
               NULL
