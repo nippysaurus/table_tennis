@@ -1,5 +1,6 @@
 #include <pebble.h>
 #include "gameplay_window.h"
+#include "history_layer.h"
 
 #define SCORE_TEXT_LAYER_HEIGHT 55
 
@@ -14,8 +15,10 @@ static GBitmap *s_bitmap_button_undo;
 Layer *game_summary_layer;
 TextLayer *text_layer_t_bg;
 TextLayer *text_layer_t;
+static HistoryLayer *s_history_layer_t;
 TextLayer *text_layer_b_bg;
 TextLayer *text_layer_b;
+static HistoryLayer *s_history_layer_b;
 
 // game state
 TableTennis* game_state;
@@ -28,16 +31,22 @@ static game_over_callback game_over;
 
 static void increment_top_player() {
   table_tennis_increment_score(game_state, TEAM_1);
+  history_layer_push_component(s_history_layer_t, POINT);
+  history_layer_push_component(s_history_layer_b, SPACE);
   game_summary_layer_display_updated_state();
 }
 
 static void increment_bottom_player() {
   table_tennis_increment_score(game_state, TEAM_2);
+  history_layer_push_component(s_history_layer_t, SPACE);
+  history_layer_push_component(s_history_layer_b, POINT);
   game_summary_layer_display_updated_state();
 }
 
 static void undo() {
   table_tennis_undo_score(game_state);
+  history_layer_pop_component(s_history_layer_t);
+  history_layer_pop_component(s_history_layer_b);
   game_summary_layer_display_updated_state();
 }
 
@@ -115,11 +124,13 @@ static void game_summary_layer_display_updated_state() {
   text_layer_set_text_color(text_layer_t, top_player_fg);
   text_layer_set_background_color(text_layer_t, top_player_bg);
   text_layer_set_text(text_layer_t, game_state->teams[TEAM_1].score_formatted);
+  history_layer_set_color(s_history_layer_t, top_player_fg);
   // bottom player
   text_layer_set_background_color(text_layer_b_bg, bottom_player_bg);
   text_layer_set_text_color(text_layer_b, bottom_player_fg);
   text_layer_set_background_color(text_layer_b, bottom_player_bg);
   text_layer_set_text(text_layer_b, game_state->teams[TEAM_2].score_formatted);
+  history_layer_set_color(s_history_layer_b, bottom_player_fg);
 }
 
 
@@ -163,6 +174,18 @@ void gameplay_window_create(GameSetup game_setup, game_over_callback game_over_c
   text_layer_set_font(text_layer_t, fonts_get_system_font(FONT_KEY_LECO_42_NUMBERS));
   layer_add_child(game_summary_layer, text_layer_get_layer(text_layer_t));
 
+  // top history
+  s_history_layer_t = history_layer_create(
+    GRect(
+      0,
+      (frame.size.h / 2) - HISTORY_LAYER_HEIGHT,
+      frame.size.w - PBL_IF_RECT_ELSE(ACTION_BAR_WIDTH, 0),
+      HISTORY_LAYER_HEIGHT
+    ),
+    GColorBlack
+  );
+  layer_add_child(game_summary_layer, s_history_layer_t);
+
   // bottom background
   text_layer_b_bg = text_layer_create(GRect(0, frame.size.h / 2, frame.size.w, frame.size.h / 2));
   layer_add_child(game_summary_layer, text_layer_get_layer(text_layer_b_bg));
@@ -173,6 +196,18 @@ void gameplay_window_create(GameSetup game_setup, game_over_callback game_over_c
   text_layer_set_text_alignment(text_layer_b, GTextAlignmentCenter);
   text_layer_set_font(text_layer_b, fonts_get_system_font(FONT_KEY_LECO_42_NUMBERS));
   layer_add_child(game_summary_layer, text_layer_get_layer(text_layer_b));
+
+  // bottom history
+  s_history_layer_b = history_layer_create(
+    GRect(
+      0,
+      frame.size.h / 2,
+      frame.size.w - PBL_IF_RECT_ELSE(ACTION_BAR_WIDTH, 0),
+      HISTORY_LAYER_HEIGHT
+    ),
+    GColorBlack
+  );
+  layer_add_child(game_summary_layer, s_history_layer_b);
 
   game_summary_layer_display_updated_state();
 
@@ -219,8 +254,10 @@ void gameplay_window_destroy() {
 
   text_layer_destroy(text_layer_t);
   text_layer_destroy(text_layer_t_bg);
+  history_layer_destroy(s_history_layer_t);
   text_layer_destroy(text_layer_b);
   text_layer_destroy(text_layer_b_bg);
+  history_layer_destroy(s_history_layer_b);
   layer_destroy(game_summary_layer);
 
   table_tennis_destroy(game_state);

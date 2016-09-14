@@ -2,6 +2,7 @@
 
 #include "table_tennis.h"
 #include "game_setup_window.h"
+#include "history_layer.h"
 
 typedef void (*game_over_callback)(TeamNumber winning_team, int team_1_score, int team_2_score);
 
