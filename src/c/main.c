@@ -7,7 +7,7 @@ bool game_setup_window_visible = false;
 bool gameplay_window_visible = false;
 bool game_over_window_visible = false;
 
-static void game_over(TeamNumber winning_team, int team_1_score, int team_2_score) {
+static void game_over(TeamNumber winning_team, uint8_t team_1_score, uint8_t team_2_score) {
   //APP_LOG(APP_LOG_LEVEL_DEBUG, "game over");
   if (gameplay_window_visible == true) {
     gameplay_window_destroy();

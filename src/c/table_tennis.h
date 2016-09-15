@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdint.h>
 
 typedef enum {
   SHORT_GAME = 11,
@@ -16,7 +17,7 @@ typedef enum {
 } TeamNumber;
 
 typedef struct {
-  int score;
+  uint8_t score;
   char score_formatted[4];
   bool serving;
   bool serving_first;
@@ -27,9 +28,9 @@ typedef struct {
 typedef struct {
   Team teams[2];
   TeamNumber winner;
-  int total_serve_count;
+  uint8_t total_serve_count;
   TeamNumber history[HISTORY_LENGTH];
-  int total_score;
+  uint8_t total_score;
   bool overtime;
   bool serve_just_changed;
   GameLength game_length;

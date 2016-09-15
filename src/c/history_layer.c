@@ -13,8 +13,8 @@ static void s_draw(Layer* layer, GContext *ctx) {
 
   GRect layer_bounds = layer_get_bounds(layer);
 
-  for (int i = 0; i < history_layer_state->component_count; i++) {
-    int inverse_index = history_layer_state->component_count - i - 1;
+  for (uint8_t i = 0; i < history_layer_state->component_count; i++) {
+    uint8_t inverse_index = history_layer_state->component_count - i - 1;
     bool is_point = history_layer_state->configuration[inverse_index] == POINT;
     if (is_point) {
       graphics_fill_rect(

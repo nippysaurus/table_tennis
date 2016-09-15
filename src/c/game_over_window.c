@@ -21,7 +21,7 @@ static void update_proc(Layer *layer, GContext *ctx) {
   gdraw_command_image_draw(ctx, s_icon_image, grect_inset(bounds, frame_insets).origin);
 }
 
-void game_over_window_create(bool won, int team_1_score, int team_2_score) {
+void game_over_window_create(bool won, uint8_t team_1_score, uint8_t team_2_score) {
   s_game_over_window = window_create();
 
   // Get the bounds of the Window

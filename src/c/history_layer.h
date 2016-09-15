@@ -13,7 +13,7 @@ typedef Layer HistoryLayer;
 
 typedef struct {
   ComponentType configuration[50];
-  int component_count;
+  uint8_t component_count;
   GColor8 color;
 } HistoryLayerState;
 
