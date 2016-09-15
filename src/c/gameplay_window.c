@@ -12,42 +12,42 @@ static GBitmap *s_bitmap_button_increment_score;
 static GBitmap *s_bitmap_button_undo;
 
 // game summary layers
-Layer *game_summary_layer;
-TextLayer *text_layer_t_bg;
-TextLayer *text_layer_t;
+static Layer *s_game_summary_layer;
+static TextLayer *s_text_layer_t_bg;
+static TextLayer *s_text_layer_t;
 static HistoryLayer *s_history_layer_t;
-TextLayer *text_layer_b_bg;
-TextLayer *text_layer_b;
+static TextLayer *s_text_layer_b_bg;
+static TextLayer *s_text_layer_b;
 static HistoryLayer *s_history_layer_b;
 
 // game state
-TableTennis* game_state;
+static TableTennis* s_game_state;
 
 static GameSetup s_game_setup;
 
-static void game_summary_layer_display_updated_state();
+static void s_game_summary_layer_display_updated_state();
 
-static game_over_callback game_over;
+static GameOverCallback s_game_over;
 
 static void increment_top_player() {
-  table_tennis_increment_score(game_state, TEAM_1);
+  table_tennis_increment_score(s_game_state, TEAM_1);
   history_layer_push_component(s_history_layer_t, POINT);
   history_layer_push_component(s_history_layer_b, SPACE);
-  game_summary_layer_display_updated_state();
+  s_game_summary_layer_display_updated_state();
 }
 
 static void increment_bottom_player() {
-  table_tennis_increment_score(game_state, TEAM_2);
+  table_tennis_increment_score(s_game_state, TEAM_2);
   history_layer_push_component(s_history_layer_t, SPACE);
   history_layer_push_component(s_history_layer_b, POINT);
-  game_summary_layer_display_updated_state();
+  s_game_summary_layer_display_updated_state();
 }
 
 static void undo() {
-  table_tennis_undo_score(game_state);
+  table_tennis_undo_score(s_game_state);
   history_layer_pop_component(s_history_layer_t);
   history_layer_pop_component(s_history_layer_b);
-  game_summary_layer_display_updated_state();
+  s_game_summary_layer_display_updated_state();
 }
 
 static void click_config_provider(void *context) {
@@ -56,13 +56,13 @@ static void click_config_provider(void *context) {
   window_single_click_subscribe(BUTTON_ID_DOWN, (ClickHandler) increment_bottom_player);
 }
 
-static void game_summary_layer_display_updated_state() {
+static void s_game_summary_layer_display_updated_state() {
   // handle game over logic
-  if (game_state->winner != NO_TEAM) {
-    game_over(
-      game_state->winner,
-      game_state->teams[TEAM_1].score,
-      game_state->teams[TEAM_2].score
+  if (s_game_state->winner != NO_TEAM) {
+    s_game_over(
+      s_game_state->winner,
+      s_game_state->teams[TEAM_1].score,
+      s_game_state->teams[TEAM_2].score
     );
     if (s_game_setup.game_over == SINGLE) {
       vibes_short_pulse();
@@ -73,7 +73,7 @@ static void game_summary_layer_display_updated_state() {
     return;
   }
 
-  if (game_state->serve_just_changed) {
+  if (s_game_state->serve_just_changed) {
     if (s_game_setup.serve_change == SINGLE) {
       vibes_short_pulse();
     }
@@ -86,7 +86,7 @@ static void game_summary_layer_display_updated_state() {
   GColor8 top_player_fg;
   GColor8 bottom_player_bg;
   GColor8 bottom_player_fg;
-  if (game_state->teams[TEAM_1].serving == true) {
+  if (s_game_state->teams[TEAM_1].serving == true) {
     #if defined(PBL_BW)
     top_player_bg = GColorLightGray;
     top_player_fg = GColorBlack;
@@ -120,22 +120,22 @@ static void game_summary_layer_display_updated_state() {
 
   }
   // top player
-  text_layer_set_background_color(text_layer_t_bg, top_player_bg);
-  text_layer_set_text_color(text_layer_t, top_player_fg);
-  text_layer_set_background_color(text_layer_t, top_player_bg);
-  text_layer_set_text(text_layer_t, game_state->teams[TEAM_1].score_formatted);
+  text_layer_set_background_color(s_text_layer_t_bg, top_player_bg);
+  text_layer_set_text_color(s_text_layer_t, top_player_fg);
+  text_layer_set_background_color(s_text_layer_t, top_player_bg);
+  text_layer_set_text(s_text_layer_t, s_game_state->teams[TEAM_1].score_formatted);
   history_layer_set_color(s_history_layer_t, top_player_fg);
   // bottom player
-  text_layer_set_background_color(text_layer_b_bg, bottom_player_bg);
-  text_layer_set_text_color(text_layer_b, bottom_player_fg);
-  text_layer_set_background_color(text_layer_b, bottom_player_bg);
-  text_layer_set_text(text_layer_b, game_state->teams[TEAM_2].score_formatted);
+  text_layer_set_background_color(s_text_layer_b_bg, bottom_player_bg);
+  text_layer_set_text_color(s_text_layer_b, bottom_player_fg);
+  text_layer_set_background_color(s_text_layer_b, bottom_player_bg);
+  text_layer_set_text(s_text_layer_b, s_game_state->teams[TEAM_2].score_formatted);
   history_layer_set_color(s_history_layer_b, bottom_player_fg);
 }
 
 
-void gameplay_window_create(GameSetup game_setup, game_over_callback game_over_callback) {
-  game_over = game_over_callback;
+void gameplay_window_create(GameSetup game_setup, GameOverCallback GameOverCallback) {
+  s_game_over = GameOverCallback;
 
   s_game_setup = game_setup;
 
@@ -156,23 +156,23 @@ void gameplay_window_create(GameSetup game_setup, game_over_callback game_over_c
     window_bounds.size.h
   );
 
-  game_state = table_tennis_create(
+  s_game_state = table_tennis_create(
     s_game_setup.game_length,
     s_game_setup.first_serve
   );
 
-  game_summary_layer = layer_create(GRect(0, 0, frame.size.w, frame.size.h));
+  s_game_summary_layer = layer_create(GRect(0, 0, frame.size.w, frame.size.h));
 
   // top background
-  text_layer_t_bg = text_layer_create(GRect(0, 0, frame.size.w, frame.size.h / 2));
-  layer_add_child(game_summary_layer, text_layer_get_layer(text_layer_t_bg));
+  s_text_layer_t_bg = text_layer_create(GRect(0, 0, frame.size.w, frame.size.h / 2));
+  layer_add_child(s_game_summary_layer, text_layer_get_layer(s_text_layer_t_bg));
 
   // top text
-  text_layer_t = text_layer_create(GRect(10, 10, frame.size.w - PBL_IF_RECT_ELSE(ACTION_BAR_WIDTH, 0) - 20, SCORE_TEXT_LAYER_HEIGHT));
-  text_layer_set_overflow_mode(text_layer_t, GTextOverflowModeWordWrap);
-  text_layer_set_text_alignment(text_layer_t, GTextAlignmentCenter);
-  text_layer_set_font(text_layer_t, fonts_get_system_font(FONT_KEY_LECO_42_NUMBERS));
-  layer_add_child(game_summary_layer, text_layer_get_layer(text_layer_t));
+  s_text_layer_t = text_layer_create(GRect(10, 10, frame.size.w - PBL_IF_RECT_ELSE(ACTION_BAR_WIDTH, 0) - 20, SCORE_TEXT_LAYER_HEIGHT));
+  text_layer_set_overflow_mode(s_text_layer_t, GTextOverflowModeWordWrap);
+  text_layer_set_text_alignment(s_text_layer_t, GTextAlignmentCenter);
+  text_layer_set_font(s_text_layer_t, fonts_get_system_font(FONT_KEY_LECO_42_NUMBERS));
+  layer_add_child(s_game_summary_layer, text_layer_get_layer(s_text_layer_t));
 
   // top history
   s_history_layer_t = history_layer_create(
@@ -184,18 +184,18 @@ void gameplay_window_create(GameSetup game_setup, game_over_callback game_over_c
     ),
     GColorBlack
   );
-  layer_add_child(game_summary_layer, s_history_layer_t);
+  layer_add_child(s_game_summary_layer, s_history_layer_t);
 
   // bottom background
-  text_layer_b_bg = text_layer_create(GRect(0, frame.size.h / 2, frame.size.w, frame.size.h / 2));
-  layer_add_child(game_summary_layer, text_layer_get_layer(text_layer_b_bg));
+  s_text_layer_b_bg = text_layer_create(GRect(0, frame.size.h / 2, frame.size.w, frame.size.h / 2));
+  layer_add_child(s_game_summary_layer, text_layer_get_layer(s_text_layer_b_bg));
 
   // bottom text
-  text_layer_b = text_layer_create(GRect(10, (frame.size.h - SCORE_TEXT_LAYER_HEIGHT) - 10, frame.size.w - PBL_IF_RECT_ELSE(ACTION_BAR_WIDTH, 0) - 20, SCORE_TEXT_LAYER_HEIGHT));
-  text_layer_set_overflow_mode(text_layer_b, GTextOverflowModeWordWrap);
-  text_layer_set_text_alignment(text_layer_b, GTextAlignmentCenter);
-  text_layer_set_font(text_layer_b, fonts_get_system_font(FONT_KEY_LECO_42_NUMBERS));
-  layer_add_child(game_summary_layer, text_layer_get_layer(text_layer_b));
+  s_text_layer_b = text_layer_create(GRect(10, (frame.size.h - SCORE_TEXT_LAYER_HEIGHT) - 10, frame.size.w - PBL_IF_RECT_ELSE(ACTION_BAR_WIDTH, 0) - 20, SCORE_TEXT_LAYER_HEIGHT));
+  text_layer_set_overflow_mode(s_text_layer_b, GTextOverflowModeWordWrap);
+  text_layer_set_text_alignment(s_text_layer_b, GTextAlignmentCenter);
+  text_layer_set_font(s_text_layer_b, fonts_get_system_font(FONT_KEY_LECO_42_NUMBERS));
+  layer_add_child(s_game_summary_layer, text_layer_get_layer(s_text_layer_b));
 
   // bottom history
   s_history_layer_b = history_layer_create(
@@ -207,14 +207,14 @@ void gameplay_window_create(GameSetup game_setup, game_over_callback game_over_c
     ),
     GColorBlack
   );
-  layer_add_child(game_summary_layer, s_history_layer_b);
+  layer_add_child(s_game_summary_layer, s_history_layer_b);
 
-  game_summary_layer_display_updated_state();
+  s_game_summary_layer_display_updated_state();
 
   // add game summary layer to window
   layer_add_child(
     window_get_root_layer(s_main_window),
-    game_summary_layer
+    s_game_summary_layer
   );
 
   // 
@@ -252,15 +252,15 @@ void gameplay_window_destroy() {
   // destroy action bar later
   action_bar_layer_destroy(s_main_window_action_bar);
 
-  text_layer_destroy(text_layer_t);
-  text_layer_destroy(text_layer_t_bg);
+  text_layer_destroy(s_text_layer_t);
+  text_layer_destroy(s_text_layer_t_bg);
   history_layer_destroy(s_history_layer_t);
-  text_layer_destroy(text_layer_b);
-  text_layer_destroy(text_layer_b_bg);
+  text_layer_destroy(s_text_layer_b);
+  text_layer_destroy(s_text_layer_b_bg);
   history_layer_destroy(s_history_layer_b);
-  layer_destroy(game_summary_layer);
+  layer_destroy(s_game_summary_layer);
 
-  table_tennis_destroy(game_state);
+  table_tennis_destroy(s_game_state);
 
   window_destroy(s_main_window);
 }

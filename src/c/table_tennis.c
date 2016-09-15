@@ -1,8 +1,10 @@
 #include "table_tennis.h"
 
-void table_tennis_update_team_serving_state(TableTennis* table_tennis, TeamNumber starting_team);
-void table_tennis_update_winner(TableTennis* table_tennis);
-void table_tennis_update_calculated_fields(TableTennis* table_tennis);
+static void table_tennis_update_team_serving_state(TableTennis* table_tennis, TeamNumber starting_team);
+static void table_tennis_update_winner(TableTennis* table_tennis);
+static void table_tennis_update_calculated_fields(TableTennis* table_tennis);
+
+// =============================================================================
 
 TableTennis* table_tennis_create(GameLength game_length, TeamNumber starting_team) {
   TableTennis* table_tennis = malloc(sizeof(TableTennis));
@@ -58,7 +60,9 @@ void table_tennis_undo_score(TableTennis* table_tennis) {
   table_tennis_update_calculated_fields(table_tennis);
 }
 
-void table_tennis_update_calculated_fields(TableTennis* table_tennis) {
+// =============================================================================
+
+static void table_tennis_update_calculated_fields(TableTennis* table_tennis) {
   // update team score formatted
   snprintf(table_tennis->teams[TEAM_1].score_formatted, 4, "%d", table_tennis->teams[TEAM_1].score);
   snprintf(table_tennis->teams[TEAM_2].score_formatted, 4, "%d", table_tennis->teams[TEAM_2].score);
@@ -84,7 +88,7 @@ void table_tennis_update_calculated_fields(TableTennis* table_tennis) {
   table_tennis_update_winner(table_tennis);
 }
 
-void table_tennis_update_team_serving_state(TableTennis* table_tennis, TeamNumber team_number) {
+static void table_tennis_update_team_serving_state(TableTennis* table_tennis, TeamNumber team_number) {
   Team* team = &table_tennis->teams[team_number];
 
   if (table_tennis->overtime == true) {
@@ -102,7 +106,7 @@ void table_tennis_update_team_serving_state(TableTennis* table_tennis, TeamNumbe
   }
 }
 
-void table_tennis_update_winner(TableTennis* table_tennis) {
+static void table_tennis_update_winner(TableTennis* table_tennis) {
   Team* team1 = &table_tennis->teams[TEAM_1];
   Team* team2 = &table_tennis->teams[TEAM_2];
 

@@ -1,40 +1,7 @@
 #include <pebble.h>
 #include "history_layer.h"
 
-// ============================================================================
-
-static void s_draw(Layer* layer, GContext *ctx) {
-  HistoryLayerState *history_layer_state = layer_get_data(layer);
-
-  graphics_context_set_fill_color(
-    ctx,
-    history_layer_state->color
-  );
-
-  GRect layer_bounds = layer_get_bounds(layer);
-
-  for (uint8_t i = 0; i < history_layer_state->component_count; i++) {
-    uint8_t inverse_index = history_layer_state->component_count - i - 1;
-    bool is_point = history_layer_state->configuration[inverse_index] == POINT;
-    if (is_point) {
-      graphics_fill_rect(
-        ctx,
-        GRect(
-          layer_bounds.size.w - (
-            (i+1) * (
-              HISTORY_LAYER_COMPONENT_WIDTH + HISTORY_LAYER_COMPONENT_SPACING
-            )
-          ),
-          HISTORY_LAYER_COMPONENT_SPACING,
-          HISTORY_LAYER_COMPONENT_WIDTH,
-          HISTORY_LAYER_HEIGHT - (HISTORY_LAYER_COMPONENT_SPACING * 2)
-        ),
-        2,
-        GCornersAll
-      );
-    }
-  }
-}
+static void s_draw(Layer*, GContext*);
 
 // ============================================================================
 
@@ -84,4 +51,39 @@ void history_layer_set_color(HistoryLayer* history_layer, GColor8 color) {
   history_layer_state->color = color;
 
   layer_mark_dirty(history_layer);
+}
+
+// ============================================================================
+
+static void s_draw(Layer* layer, GContext* ctx) {
+  HistoryLayerState *history_layer_state = layer_get_data(layer);
+
+  graphics_context_set_fill_color(
+    ctx,
+    history_layer_state->color
+  );
+
+  GRect layer_bounds = layer_get_bounds(layer);
+
+  for (uint8_t i = 0; i < history_layer_state->component_count; i++) {
+    uint8_t inverse_index = history_layer_state->component_count - i - 1;
+    bool is_point = history_layer_state->configuration[inverse_index] == POINT;
+    if (is_point) {
+      graphics_fill_rect(
+        ctx,
+        GRect(
+          layer_bounds.size.w - (
+            (i+1) * (
+              HISTORY_LAYER_COMPONENT_WIDTH + HISTORY_LAYER_COMPONENT_SPACING
+            )
+          ),
+          HISTORY_LAYER_COMPONENT_SPACING,
+          HISTORY_LAYER_COMPONENT_WIDTH,
+          HISTORY_LAYER_HEIGHT - (HISTORY_LAYER_COMPONENT_SPACING * 2)
+        ),
+        2,
+        GCornersAll
+      );
+    }
+  }
 }
