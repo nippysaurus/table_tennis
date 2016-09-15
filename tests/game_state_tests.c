@@ -4,7 +4,7 @@
 
 #include <check.h>
 
-#include "src/table_tennis.h"
+#include "src/c/table_tennis.h"
 
 START_TEST (two_player_short_game_starting_state)
 {

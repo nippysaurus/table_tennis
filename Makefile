@@ -5,7 +5,7 @@ CFLAGS=-I.
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 src/table_tennis.o:
-	gcc -c -o src/table_tennis.o src/table_tennis.c
+	gcc -c -o src/c/table_tennis.o src/c/table_tennis.c
 
 %.pdc: %.svg
 	python tools/svg2pdc.py $< -o $@
@@ -33,5 +33,5 @@ run_diorite:
 	pebble install --emulator diorite
 
 test: src/table_tennis.o tests/game_state_tests.o
-	$(CC) -o game_state_tests tests/game_state_tests.o src/table_tennis.o /usr/local/lib/libcheck.a $(CFLAGS)
+	$(CC) -o game_state_tests tests/game_state_tests.o src/c/table_tennis.o /usr/local/lib/libcheck.a $(CFLAGS)
 	./game_state_tests
