@@ -179,7 +179,7 @@ void gameplay_window_create(GameSetup game_setup, GameOverCallback GameOverCallb
     GRect(
       0,
       (frame.size.h / 2) - HISTORY_LAYER_HEIGHT,
-      frame.size.w - PBL_IF_RECT_ELSE(ACTION_BAR_WIDTH, 0),
+      frame.size.w - ACTION_BAR_WIDTH,
       HISTORY_LAYER_HEIGHT
     ),
     GColorBlack
@@ -202,7 +202,7 @@ void gameplay_window_create(GameSetup game_setup, GameOverCallback GameOverCallb
     GRect(
       0,
       frame.size.h / 2,
-      frame.size.w - PBL_IF_RECT_ELSE(ACTION_BAR_WIDTH, 0),
+      frame.size.w - ACTION_BAR_WIDTH,
       HISTORY_LAYER_HEIGHT
     ),
     GColorBlack
