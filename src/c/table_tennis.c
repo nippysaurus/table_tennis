@@ -47,10 +47,6 @@ void table_tennis_increment_score(TableTennis* table_tennis, TeamNumber team_num
 }
 
 void table_tennis_undo_score(TableTennis* table_tennis) {
-  if (table_tennis->total_serve_count == 0) {
-    return;
-  }
-
   TeamNumber team_number = table_tennis->history[table_tennis->total_serve_count];
 
   table_tennis->total_score--;
@@ -58,6 +54,10 @@ void table_tennis_undo_score(TableTennis* table_tennis) {
   table_tennis->teams[team_number].score--;
 
   table_tennis_update_calculated_fields(table_tennis);
+}
+
+bool table_tennis_can_undo(TableTennis* table_tennis) {
+  return table_tennis->total_serve_count > 0;
 }
 
 // =============================================================================

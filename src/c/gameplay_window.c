@@ -44,10 +44,12 @@ static void increment_bottom_player() {
 }
 
 static void undo() {
-  table_tennis_undo_score(s_game_state);
-  history_layer_pop_component(s_history_layer_t);
-  history_layer_pop_component(s_history_layer_b);
-  s_game_summary_layer_display_updated_state();
+  if (table_tennis_can_undo(s_game_state) == true) {
+    table_tennis_undo_score(s_game_state);
+    history_layer_pop_component(s_history_layer_t);
+    history_layer_pop_component(s_history_layer_b);
+    s_game_summary_layer_display_updated_state();
+  }
 }
 
 static void click_config_provider(void *context) {

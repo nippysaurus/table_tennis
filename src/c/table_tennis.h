@@ -40,3 +40,4 @@ TableTennis* table_tennis_create(GameLength game_length, TeamNumber starting_tea
 void table_tennis_destroy(TableTennis* table_tennis);
 void table_tennis_increment_score(TableTennis* table_tennis, TeamNumber team);
 void table_tennis_undo_score(TableTennis* table_tennis);
+bool table_tennis_can_undo(TableTennis* table_tennis);
